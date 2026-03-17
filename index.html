@@ -1119,18 +1119,22 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
       {/* Header row: back + voice toggle */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <button style={S.backBtn} onClick={() => { setRunning(false); try{window.speechSynthesis?.cancel();}catch(e){} navigate("timer", { combo, film, dev }); }}>← 中止</button>
-        <button
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}
           onClick={() => { unlockAudio(); if(!voiceOn) { speak("音声オン"); } setVoiceOn(v => !v); if(voiceOn) try{window.speechSynthesis?.cancel();}catch(e){} }}
-          style={{
-            background: voiceOn ? "rgba(200,168,124,0.15)" : "rgba(255,255,255,0.04)",
-            border: `1px solid ${voiceOn ? "rgba(200,168,124,0.4)" : "rgba(255,255,255,0.1)"}`,
-            borderRadius: 20, padding: "6px 14px", cursor: "pointer",
-            fontFamily: "inherit", fontSize: 13, color: voiceOn ? "#c8a87c" : "#5a4a36",
-            transition: "all 0.2s",
-          }}
         >
-          {voiceOn ? "🔊 音声ON" : "🔇 ビープのみ"}
-        </button>
+          <span style={{ fontSize: 13, color: "#8a7a66" }}>{voiceOn ? "🔊" : "🔇"} 音声</span>
+          <div style={{
+            width: 48, height: 28, borderRadius: 14, cursor: "pointer",
+            background: voiceOn ? "#c8a87c" : "rgba(255,255,255,0.1)",
+            position: "relative", transition: "background 0.3s", flexShrink: 0,
+          }}>
+            <div style={{
+              width: 22, height: 22, borderRadius: 11, background: "#f0e6d4",
+              position: "absolute", top: 3, left: voiceOn ? 23 : 3,
+              transition: "left 0.3s",
+            }} />
+          </div>
+        </div>
       </div>
 
       {/* ── GLOBAL OVERVIEW ── */}
