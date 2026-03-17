@@ -213,6 +213,16 @@ const AGITATION_PATTERNS = {
   gentle5s: { name: "最初5秒のみ", initial: 5, interval: 9999, duration: 0, desc: "最初5秒だけ穏やかに攪拌" },
 };
 
+const scaleInstruction = (text, scale) => {
+  if (scale === 1) return text;
+  return text
+    .replace(/(\d+\.?\d*)ml/g, (_, num) => `${Math.round(parseFloat(num) * scale)}ml`)
+    .replace(/(\d+\.?\d*)g/g, (_, num) => {
+      const v = parseFloat(num) * scale;
+      return `${v % 1 === 0 ? v : v.toFixed(1)}g`;
+    });
+};
+
 const formatTime = (s) => { if (s < 0) s = 0; const m = Math.floor(s / 60); const sec = Math.floor(s % 60); return `${m}:${sec.toString().padStart(2, "0")}`; };
 const formatTimeJa = (s) => { const m = Math.floor(s / 60); const sec = s % 60; return sec === 0 ? `${m}分` : `${m}分${sec}秒`; };
 
@@ -352,7 +362,7 @@ function MixingScreen({ dev, volume, setVolume, navigate }) {
             </div>
             <div style={{ flex: 1 }}>
               <div style={S.checkStepNum}>STEP {i + 1}</div>
-              <div style={{ ...S.checkInstruction, ...(isDone ? S.checkInstructionDone : {}) }}>{s.instruction}</div>
+              <div style={{ ...S.checkInstruction, ...(isDone ? S.checkInstructionDone : {}) }}>{scaleInstruction(s.instruction, scale)}</div>
               {s.tip && !isDone && <div style={S.checkTip}>💡 {s.tip}</div>}
             </div>
           </button>
