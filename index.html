@@ -573,7 +573,7 @@ function TimerScreen({ combo, film, dev, presoak, setPresoak, navigate }) {
     <div style={S.screen}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <button style={S.backBtn} onClick={() => navigate("filmSelect", { dev })}>← 戻る</button>
-        <button style={S.startBtnSmall} onClick={() => { unlockAudio(); navigate("process", { combo, film, dev }); }}>▶ タイマー開始</button>
+        <button style={S.startBtnSmall} onClick={() => { unlockAudio(); navigate("process", { combo, film, dev }); }}>現像タイマーへ →</button>
       </div>
       <h2 style={{ ...S.screenTitle, marginTop: 0 }}>現像設定確認</h2>
 
