@@ -221,6 +221,7 @@ function DarkroomApp() {
   const [screen, setScreen] = useState("home");
   const [selectedDev, setSelectedDev] = useState(null);
   const [selectedFilm, setSelectedFilm] = useState(null);
+  const [selectedEI, setSelectedEI] = useState(null);
   const [selectedCombo, setSelectedCombo] = useState(null);
   const [volume, setVolume] = useState(1000);
   const [presoak, setPresoak] = useState(false);
@@ -229,6 +230,7 @@ function DarkroomApp() {
     setScreen(s);
     if (data?.dev !== undefined) setSelectedDev(data.dev);
     if (data?.film !== undefined) setSelectedFilm(data.film);
+    if (data?.ei !== undefined) setSelectedEI(data.ei);
     if (data?.combo !== undefined) setSelectedCombo(data.combo);
     if (data?.presoak !== undefined) setPresoak(data.presoak);
   };
@@ -245,6 +247,8 @@ function DarkroomApp() {
         {screen === "home" && <HomeScreen navigate={navigate} />}
         {screen === "mixing" && <MixingScreen dev={selectedDev} volume={volume} setVolume={setVolume} navigate={navigate} />}
         {screen === "filmSelect" && <FilmSelectScreen dev={selectedDev} navigate={navigate} />}
+        {screen === "eiSelect" && <EISelectScreen dev={selectedDev} film={selectedFilm} navigate={navigate} />}
+        {screen === "dilutionSelect" && <DilutionSelectScreen dev={selectedDev} film={selectedFilm} ei={selectedEI} navigate={navigate} />}
         {screen === "timer" && <TimerScreen combo={selectedCombo} film={selectedFilm} dev={selectedDev} presoak={presoak} setPresoak={setPresoak} navigate={navigate} />}
         {screen === "process" && <ProcessScreen combo={selectedCombo} film={selectedFilm} dev={selectedDev} presoak={presoak} navigate={navigate} />}
       </div>
@@ -374,25 +378,72 @@ function FilmSelectScreen({ dev, navigate }) {
     <div style={S.screen}>
       <button style={S.backBtn} onClick={() => navigate("mixing", { dev })}>← 戻る</button>
       <h2 style={S.screenTitle}>フィルム選択</h2>
-      <p style={S.screenSub}>{d.nameJa}で使用可能なフィルム</p>
+      <p style={S.screenSub}>{d.nameJa}</p>
       {films.length === 0 && <div style={S.emptyMsg}>対応フィルムデータなし</div>}
       {films.map(([key, film]) => (
-        <div key={key}>
-          <div style={S.filmName}>{film.name}</div>
-          {film.developers[dev].map((combo, i) => (
-            <button key={i} style={S.comboCard} onClick={() => navigate("timer", { film: key, combo, dev })}>
-              <div style={S.comboLeft}>
-                <span style={S.comboEI}>EI {combo.ei}</span>
-                <span style={S.comboDil}>{combo.dilution}</span>
+        <button key={key} style={S.filmCard} onClick={() => navigate("eiSelect", { film: key })}>
+          <div style={S.filmCardName}>{film.name}</div>
+          <div style={S.devArrow}>→</div>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ─── EI SELECT ─────────────────────────────────────────────────────
+function EISelectScreen({ dev, film, navigate }) {
+  const f = FILMS[film];
+  const combos = f.developers[dev];
+  const eis = [...new Set(combos.map(c => c.ei))].sort((a, b) => a - b);
+  const boxEI = eis[0];
+
+  return (
+    <div style={S.screen}>
+      <button style={S.backBtn} onClick={() => navigate("filmSelect", { dev })}>← 戻る</button>
+      <h2 style={S.screenTitle}>感度（EI）を選択</h2>
+      <p style={S.screenSub}>{f.name}</p>
+      {eis.map((ei, i) => {
+        const isBox = ei === boxEI;
+        const pushStops = Math.round(Math.log2(ei / boxEI));
+        return (
+          <button key={ei} style={{ ...S.eiCard, ...(isBox ? S.eiCardDefault : {}) }}
+            onClick={() => navigate("dilutionSelect", { ei })}>
+            <div style={{ flex: 1 }}>
+              <div style={S.eiValue}>EI {ei}</div>
+              <div style={S.eiLabel}>
+                {isBox ? "標準（ボックス速度）" : `増感 +${pushStops}段`}
               </div>
-              <div style={{ flex: 1 }}>
-                <span style={S.comboTime}>{formatTimeJa(combo.time)}</span>
-                <span style={S.comboTemp}> / {combo.temp}°C</span>
-              </div>
-              <div style={S.comboStars}>{"★".repeat(combo.confidence)}{"☆".repeat(5 - combo.confidence)}</div>
-            </button>
-          ))}
-        </div>
+            </div>
+            <div style={S.devArrow}>→</div>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── DILUTION SELECT ───────────────────────────────────────────────
+function DilutionSelectScreen({ dev, film, ei, navigate }) {
+  const f = FILMS[film];
+  const combos = f.developers[dev].filter(c => c.ei === ei);
+
+  return (
+    <div style={S.screen}>
+      <button style={S.backBtn} onClick={() => navigate("eiSelect", { film, dev })}>← 戻る</button>
+      <h2 style={S.screenTitle}>希釈を選択</h2>
+      <p style={S.screenSub}>{f.name} / EI {ei}</p>
+      {combos.map((combo, i) => (
+        <button key={i} style={S.dilCard} onClick={() => navigate("timer", { combo, film, dev })}>
+          <div style={{ flex: 1 }}>
+            <div style={S.dilName}>{combo.dilution}</div>
+            <div style={S.dilSub}>{combo.source}</div>
+          </div>
+          <div style={{ textAlign: "right", marginRight: 12 }}>
+            <div style={S.dilTime}>{formatTimeJa(combo.time)}</div>
+            <div style={S.dilTemp}>{combo.temp}°C</div>
+          </div>
+          <div style={S.comboStars}>{"★".repeat(combo.confidence)}{"☆".repeat(5 - combo.confidence)}</div>
+        </button>
       ))}
     </div>
   );
@@ -1333,13 +1384,17 @@ const S = {
 
   primaryBtn: { width:"100%", padding:16, borderRadius:12, border:"none", background:"linear-gradient(135deg,#c8a87c 0%,#a08050 100%)", color:"#1a1209", fontSize:16, fontWeight:700, cursor:"pointer", marginTop:24, fontFamily:"inherit", letterSpacing:1 },
 
-  filmName: { fontSize:16, fontWeight:600, color:"#f0e6d4", margin:"20px 0 8px" },
-  comboCard: { width:"100%", display:"flex", alignItems:"center", gap:12, background:"rgba(255,255,255,0.02)", border:"1px solid rgba(200,168,124,0.12)", borderRadius:10, padding:"14px 16px", marginBottom:8, cursor:"pointer", fontFamily:"inherit", color:"inherit", textAlign:"left" },
-  comboLeft: { display:"flex", flexDirection:"column", gap:2, minWidth:80 },
-  comboEI: { fontSize:15, fontWeight:700, color:"#c8a87c" },
-  comboDil: { fontSize:12, color:"#8a7a66" },
-  comboTime: { fontSize:18, fontWeight:700, color:"#f0e6d4", fontVariantNumeric:"tabular-nums" },
-  comboTemp: { fontSize:13, color:"#8a7a66" },
+  filmCard: { width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", background:"rgba(255,255,255,0.03)", border:"1px solid rgba(200,168,124,0.15)", borderRadius:12, padding:"18px 18px", marginBottom:10, cursor:"pointer", fontFamily:"inherit", color:"inherit", textAlign:"left" },
+  filmCardName: { fontSize:17, fontWeight:600, color:"#f0e6d4" },
+  eiCard: { width:"100%", display:"flex", alignItems:"center", background:"rgba(255,255,255,0.03)", border:"1px solid rgba(200,168,124,0.12)", borderRadius:12, padding:"16px 18px", marginBottom:10, cursor:"pointer", fontFamily:"inherit", color:"inherit", textAlign:"left" },
+  eiCardDefault: { border:"1px solid rgba(200,168,124,0.4)", background:"rgba(200,168,124,0.07)" },
+  eiValue: { fontSize:22, fontWeight:700, color:"#f0e6d4", fontVariantNumeric:"tabular-nums" },
+  eiLabel: { fontSize:12, color:"#8a7a66", marginTop:3 },
+  dilCard: { width:"100%", display:"flex", alignItems:"center", background:"rgba(255,255,255,0.03)", border:"1px solid rgba(200,168,124,0.12)", borderRadius:12, padding:"16px 18px", marginBottom:10, cursor:"pointer", fontFamily:"inherit", color:"inherit", textAlign:"left" },
+  dilName: { fontSize:18, fontWeight:700, color:"#c8a87c" },
+  dilSub: { fontSize:11, color:"#7a6a56", marginTop:3 },
+  dilTime: { fontSize:20, fontWeight:700, color:"#f0e6d4", fontVariantNumeric:"tabular-nums" },
+  dilTemp: { fontSize:12, color:"#8a7a66", marginTop:2 },
   comboStars: { fontSize:12, color:"#c8a87c", whiteSpace:"nowrap" },
   emptyMsg: { textAlign:"center", color:"#7a6a56", padding:40, fontSize:14 },
 
