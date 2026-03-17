@@ -571,22 +571,48 @@ function TimerScreen({ combo, film, dev, presoak, setPresoak, navigate }) {
 
   return (
     <div style={S.screen}>
-      <button style={S.backBtn} onClick={() => navigate("filmSelect", { dev })}>← 戻る</button>
-      <h2 style={S.screenTitle}>現像設定確認</h2>
-      <div style={S.confirmCard}>
-        {[
-          ["フィルム", f.name],
-          ["現像液", DEVELOPERS[dev].nameJa],
-          ["希釈", combo.dilution],
-          ["EI", combo.ei],
-          ["温度", `${combo.temp}°C`],
-        ].map(([l, v], i) => (
-          <div key={i} style={S.confirmRow}><span style={S.confirmLabel}>{l}</span><span style={S.confirmVal}>{v}</span></div>
-        ))}
-        <div style={S.confirmRow}><span style={S.confirmLabel}>現像時間</span><span style={S.confirmValBig}>{formatTimeJa(combo.time)}</span></div>
-        <div style={S.confirmRow}><span style={S.confirmLabel}>攪拌</span><span style={S.confirmVal}>{pat.name}</span></div>
-        <div style={S.confirmRow}><span style={S.confirmLabel}>ソース</span><span style={S.confirmVal}>{combo.source}</span></div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <button style={S.backBtn} onClick={() => navigate("filmSelect", { dev })}>← 戻る</button>
+        <button style={S.startBtnSmall} onClick={() => { unlockAudio(); navigate("process", { combo, film, dev }); }}>▶ タイマー開始</button>
       </div>
+      <h2 style={{ ...S.screenTitle, marginTop: 0 }}>現像設定確認</h2>
+
+      <div style={S.confirmGrid}>
+        {/* 全幅: フィルム */}
+        <div style={{ ...S.confirmCell, gridColumn: "1 / -1" }}>
+          <div style={S.confirmLabel}>フィルム</div>
+          <div style={S.confirmVal}>{f.name}</div>
+        </div>
+        {/* 全幅: 現像液 */}
+        <div style={{ ...S.confirmCell, gridColumn: "1 / -1" }}>
+          <div style={S.confirmLabel}>現像液</div>
+          <div style={S.confirmVal}>{DEVELOPERS[dev].nameJa}</div>
+        </div>
+        {/* 2列: EI・希釈 */}
+        <div style={S.confirmCell}>
+          <div style={S.confirmLabel}>感度（EI）</div>
+          <div style={{ ...S.confirmVal, fontSize: 18, fontWeight: 700, color: "#c8a87c" }}>{combo.ei}</div>
+        </div>
+        <div style={S.confirmCell}>
+          <div style={S.confirmLabel}>希釈</div>
+          <div style={S.confirmVal}>{combo.dilution}</div>
+        </div>
+        {/* 2列: 温度・攪拌 */}
+        <div style={S.confirmCell}>
+          <div style={S.confirmLabel}>温度</div>
+          <div style={S.confirmVal}>{combo.temp}°C</div>
+        </div>
+        <div style={S.confirmCell}>
+          <div style={S.confirmLabel}>攪拌</div>
+          <div style={{ ...S.confirmVal, fontSize: 12 }}>{pat.name}</div>
+        </div>
+        {/* 全幅: 現像時間（大きく） */}
+        <div style={{ ...S.confirmCell, gridColumn: "1 / -1", background: "rgba(200,168,124,0.06)", textAlign: "center" }}>
+          <div style={S.confirmLabel}>現像時間</div>
+          <div style={S.confirmValBig}>{formatTimeJa(combo.time)}</div>
+        </div>
+      </div>
+      <div style={{ fontSize: 11, color: "#5a4a36", marginTop: 4, textAlign: "right" }}>出典: {combo.source}</div>
 
       {/* ── PRESOAK TOGGLE ── */}
       <div style={{
@@ -717,7 +743,6 @@ function TimerScreen({ combo, film, dev, presoak, setPresoak, navigate }) {
         </p>
       </div>
 
-      <button style={S.primaryBtn} onClick={() => { unlockAudio(); navigate("process", { combo, film, dev }); }}>全工程タイマー開始 →</button>
     </div>
   );
 }
@@ -1408,11 +1433,12 @@ const S = {
   comboStars: { fontSize:12, color:"#c8a87c", whiteSpace:"nowrap" },
   emptyMsg: { textAlign:"center", color:"#7a6a56", padding:40, fontSize:14 },
 
-  confirmCard: { background:"rgba(255,255,255,0.03)", borderRadius:12, padding:"4px 0", border:"1px solid rgba(200,168,124,0.12)", marginTop:16 },
-  confirmRow: { display:"flex", justifyContent:"space-between", alignItems:"center", padding:"12px 18px", borderBottom:"1px solid rgba(200,168,124,0.06)" },
-  confirmLabel: { fontSize:13, color:"#8a7a66" },
+  confirmGrid: { display:"grid", gridTemplateColumns:"1fr 1fr", gap:1, background:"rgba(200,168,124,0.08)", borderRadius:12, overflow:"hidden", border:"1px solid rgba(200,168,124,0.12)", marginTop:8 },
+  confirmCell: { background:"rgba(10,10,10,0.8)", padding:"10px 14px" },
+  confirmLabel: { fontSize:11, color:"#6a5a46", letterSpacing:1, marginBottom:3 },
   confirmVal: { fontSize:14, color:"#e0d4c2", fontWeight:500 },
-  confirmValBig: { fontSize:20, color:"#c8a87c", fontWeight:700 },
+  confirmValBig: { fontSize:26, color:"#c8a87c", fontWeight:700, fontVariantNumeric:"tabular-nums" },
+  startBtnSmall: { padding:"8px 18px", borderRadius:20, border:"none", background:"linear-gradient(135deg,#c8a87c 0%,#a08050 100%)", color:"#1a1209", fontSize:14, fontWeight:700, cursor:"pointer", fontFamily:"inherit" },
   agitDesc: { background:"rgba(200,168,124,0.06)", borderRadius:12, padding:16, marginTop:16, border:"1px solid rgba(200,168,124,0.12)" },
   agitTitle: { fontSize:13, fontWeight:600, color:"#c8a87c", marginBottom:6 },
   agitText: { fontSize:13, color:"#b0a090", margin:0, lineHeight:1.6 },
