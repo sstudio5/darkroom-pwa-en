@@ -271,9 +271,7 @@ function HomeScreen({ navigate }) {
   return (
     <div style={S.screen}>
       <div style={S.heroSection}>
-        <div style={S.heroIcon}>◉</div>
-        <h1 style={S.heroTitle}>暗室アシスタント</h1>
-        <p style={S.heroSub}>Darkroom Assistant</p>
+        <h1 style={S.heroTitle}>◉ 暗室アシスタント</h1>
       </div>
       <div style={S.sectionLabel}>現像液を選択</div>
       {Object.entries(DEVELOPERS).map(([key, dev]) => (
@@ -1349,10 +1347,8 @@ const S = {
   safeArea: { paddingTop:12, paddingBottom:40 },
   screen: { padding:"0 20px 40px", minHeight:"100vh", transition:"background 0.3s" },
   screenAgitate: { background:"radial-gradient(ellipse at center,rgba(255,107,53,0.08) 0%,transparent 70%)" },
-  heroSection: { textAlign:"center", padding:"40px 0 30px" },
-  heroIcon: { fontSize:48, color:"#c8a87c", marginBottom:12 },
-  heroTitle: { fontSize:28, fontWeight:700, color:"#f0e6d4", margin:0, letterSpacing:2 },
-  heroSub: { fontSize:13, color:"#8a7a66", marginTop:6, letterSpacing:3, textTransform:"uppercase" },
+  heroSection: { padding:"20px 0 8px" },
+  heroTitle: { fontSize:20, fontWeight:700, color:"#c8a87c", margin:0, letterSpacing:2 },
   backBtn: { background:"none", border:"none", color:"#c8a87c", fontSize:15, padding:"16px 0", cursor:"pointer", fontFamily:"inherit" },
   sectionLabel: { fontSize:11, letterSpacing:3, textTransform:"uppercase", color:"#8a7a66", marginBottom:12, marginTop:24, fontWeight:600 },
 
