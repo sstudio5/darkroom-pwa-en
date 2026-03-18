@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="暗室">
+<meta name="apple-mobile-web-app-title" content="Darkroom">
 <meta name="theme-color" content="#1a1209">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icon-192.png">
-<title>暗室アシスタント</title>
+<title>Darkroom Assistant</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { background: #0a0a0a; overflow-x: hidden; }
@@ -30,187 +30,104 @@ const DEVELOPERS = {
   "d76": {
     name: "Kodak D-76",
     nameJa: "Kodak D-76",
-    description: "最も標準的なMQ現像液。メトール＋ハイドロキノンの超加法混合。微粒子で滑らかなトーン。ほぼ全てのモノクロフィルムに対応し、メーカー公式データが最も豊富。",
+    description: "The most standard MQ developer. Metol + hydroquinone superadditive formula. Fine grain with smooth tones. Works with virtually all B&W films; the most comprehensive official manufacturer data available.",
     chemicals: [
-      { name: "水（52°Cに加熱）", amount: 750, unit: "ml", perLiter: 750, role: "溶媒" },
-      { name: "メトール（エロン）", amount: 2.0, unit: "g", perLiter: 2.0, role: "主現像剤" },
-      { name: "無水亜硫酸ナトリウム", amount: 100.0, unit: "g", perLiter: 100.0, role: "保恒剤" },
-      { name: "ハイドロキノン", amount: 5.0, unit: "g", perLiter: 5.0, role: "副現像剤" },
-      { name: "ホウ砂", amount: 2.0, unit: "g", perLiter: 2.0, role: "アルカリ" },
+      { name: "Water (heated to 52°C)", amount: 750, unit: "ml", perLiter: 750, role: "Solvent" },
+      { name: "Metol (Elon)", amount: 2.0, unit: "g", perLiter: 2.0, role: "Primary developer" },
+      { name: "Sodium sulfite (anhydrous)", amount: 100.0, unit: "g", perLiter: 100.0, role: "Preservative" },
+      { name: "Hydroquinone", amount: 5.0, unit: "g", perLiter: 5.0, role: "Secondary developer" },
+      { name: "Borax", amount: 2.0, unit: "g", perLiter: 2.0, role: "Alkali" },
     ],
     mixingSteps: [
-      { instruction: "750mlの水を52°Cに加熱する", tip: "52°Cを超えないこと" },
-      { instruction: "亜硫酸ナトリウムをひとつまみ（約5g）入れて軽く撹拌", tip: "溶存酸素を除去し、メトールの酸化を防ぐ" },
-      { instruction: "メトール 2.0gを投入し、完全に溶けるまで穏やかに撹拌", tip: "必ず大量の亜硫酸ナトリウムより先に入れる" },
-      { instruction: "無水亜硫酸ナトリウム 100.0gを投入し、完全に溶けるまで撹拌", tip: null },
-      { instruction: "ハイドロキノン 5.0gを投入し、溶けるまで撹拌", tip: "温かい亜硫酸ナトリウム溶液中ではすぐに溶ける" },
-      { instruction: "ホウ砂 2.0gを投入し、溶けるまで撹拌", tip: "アルカリは最後に入れる" },
-      { instruction: "冷水で全量を1000mlにする", tip: null },
-      { instruction: "室温まで冷却し、遮光瓶に満タンで保存", tip: "24時間後から使用可能。液は薄い麦わら色が正常" },
+      { instruction: "Heat 750ml of water to 52°C", tip: "Do not exceed 52°C" },
+      { instruction: "Add a pinch (~5g) of sodium sulfite and stir gently", tip: "Removes dissolved oxygen to prevent metol oxidation" },
+      { instruction: "Add 2.0g of Metol and stir gently until fully dissolved", tip: "Always add before the bulk sodium sulfite" },
+      { instruction: "Add 100.0g of sodium sulfite and stir until fully dissolved", tip: null },
+      { instruction: "Add 5.0g of Hydroquinone and stir until dissolved", tip: "Dissolves quickly in the warm sulfite solution" },
+      { instruction: "Add 2.0g of Borax and stir until dissolved", tip: "Always add the alkali last" },
+      { instruction: "Top up to 1000ml with cold water", tip: null },
+      { instruction: "Cool to room temperature and store in a full, light-tight bottle", tip: "Usable after 24 hours. Pale straw color is normal" },
     ],
-    shelfLife: "満タン密封: 6ヶ月 / 半分: 2ヶ月",
+    shelfLife: "Full sealed: 6 months / Half full: 2 months",
   },
   "pota": {
     name: "POTA",
-    nameJa: "POTA（フェニドン現像液）",
-    description: "フェニドン＋亜硫酸ナトリウムだけの2薬品現像液。フェニドンが自己酸化で抑制されるため超低コントラスト。Tech Panで15〜20ストップの階調を記録できる。使用期限が約1時間と短いのが弱点。",
+    nameJa: "POTA (Phenidone Developer)",
+    description: "A two-chemical developer using only Phenidone + sodium sulfite. Ultra-low contrast due to Phenidone self-inhibition. Can capture 15–20 stops of tonal range with Tech Pan. Weakness: working life of only ~1 hour.",
     chemicals: [
-      { name: "蒸留水（35〜52°C）", amount: 750, unit: "ml", perLiter: 750, role: "溶媒" },
-      { name: "無水亜硫酸ナトリウム", amount: 30.0, unit: "g", perLiter: 30.0, role: "保恒剤・銀溶媒" },
-      { name: "フェニドン", amount: 1.5, unit: "g", perLiter: 1.5, role: "唯一の現像剤" },
+      { name: "Distilled water (35–52°C)", amount: 750, unit: "ml", perLiter: 750, role: "Solvent" },
+      { name: "Sodium sulfite (anhydrous)", amount: 30.0, unit: "g", perLiter: 30.0, role: "Preservative / silver solvent" },
+      { name: "Phenidone", amount: 1.5, unit: "g", perLiter: 1.5, role: "Sole developing agent" },
     ],
     mixingSteps: [
-      { instruction: "750mlの蒸留水を35〜52°Cに加熱", tip: null },
-      { instruction: "亜硫酸ナトリウム 30gを先に完全に溶かす", tip: "pH約9のアルカリ溶液を作り、フェニドンの溶解を助ける" },
-      { instruction: "フェニドン 1.5gを投入して撹拌", tip: "完全に溶けなくても正常。フェニドンは水に溶けにくい" },
-      { instruction: "冷蒸留水で全量1リットルにする", tip: null },
-      { instruction: "作業温度まで冷却", tip: "⚠️ 使用可能時間は約1時間！使用直前に調合し、使用後は必ず廃棄" },
+      { instruction: "Heat 750ml of distilled water to 35–52°C", tip: null },
+      { instruction: "Dissolve 30g of sodium sulfite completely first", tip: "Creates an alkaline solution (~pH 9) that helps dissolve the Phenidone" },
+      { instruction: "Add 1.5g of Phenidone and stir", tip: "Normal if not fully dissolved. Phenidone has low water solubility" },
+      { instruction: "Top up to 1 liter with cool distilled water", tip: null },
+      { instruction: "Cool to working temperature", tip: "⚠️ Working life is only ~1 hour! Mix immediately before use and discard after." },
     ],
-    shelfLife: "⚠️ 約1時間（ワンショット・必ず廃棄）",
-  },
-  "easy-pota": {
-    name: "Easy POTA",
-    nameJa: "Easy POTA（ストック溶液方式）",
-    description: "POTAと同じ処方だが、フェニドンをエタノールに、亜硫酸ナトリウムを水にそれぞれストック溶液化。使用直前に混合する方式で、POTAの溶解困難と1時間の使用期限を解決。John Marriage考案。",
-    chemicals: [
-      { name: "ストックA: 亜硫酸ナトリウム水溶液", amount: 150, unit: "g/L", perLiter: 150, role: "保恒剤ストック" },
-      { name: "ストックB: フェニドンのエタノール溶液", amount: 15, unit: "g/L", perLiter: 15, role: "現像剤ストック" },
-    ],
-    mixingSteps: [
-      { instruction: "ストックA作成: 水1Lに亜硫酸ナトリウム150gを溶解", tip: "数ヶ月保存可能" },
-      { instruction: "ストックB作成: エタノール1Lにフェニドン15gを溶解", tip: "数ヶ月保存可能" },
-      { instruction: "作業液100mlあたり: 水70ml（約25°C）+ ストックA 20ml + ストックB 10ml", tip: "使用直前に混合" },
-      { instruction: "必要量に応じてスケーリング（例: 500ml → 水350ml + A 100ml + B 50ml）", tip: "ワンショット・使用後廃棄" },
-    ],
-    shelfLife: "ストック: 数ヶ月 / 作業液: 即時使用",
-  },
-  "td3": {
-    name: "TD-3",
-    nameJa: "TD-3（グリシン現像液）",
-    description: "グリシンを唯一の現像剤とするTech Pan専用現像液。Bill Troop（『The Film Developing Cookbook』共著者）が処方。Photographer's Formularyから2液濃縮キットとして現在も販売中。ネガは特有の緑褐色を呈する。",
-    chemicals: [
-      { name: "ストックA（現像剤・腐食性）", amount: 1, unit: "本", perLiter: 1, role: "グリシン主剤" },
-      { name: "ストックB（弱アルカリ）", amount: 1, unit: "本", perLiter: 1, role: "アルカリ活性化" },
-    ],
-    mixingSteps: [
-      { instruction: "ストックAとストックBを指定比率で混合", tip: "Formularyの説明書に従う。処方は非公開" },
-      { instruction: "寒冷時にストックAが結晶化した場合、45°Cの湯煎で再溶解", tip: "結晶化は品質に影響しない" },
-      { instruction: "作業液を作業温度（20°C）にする", tip: "ワンショット・使用後廃棄。最低500ml/ロール" },
-    ],
-    shelfLife: "ストック: 1年 / 作業液: 即時使用",
-  },
-  "hc110": {
-    name: "HC-110",
-    nameJa: "Kodak HC-110（希釈F）",
-    description: "Kodakの液体濃縮PQ現像液。希釈F（1:79）でTech Panの中程度コントラスト向け。CI 0.80〜1.00でPOTA（CI 0.64）より高コントラストだが、Kodak P-255に公式データがあり信頼性が高い。原液は数年保存可能。",
-    chemicals: [
-      { name: "HC-110シロップ（原液）", amount: 7.5, unit: "ml", perLiter: 7.5, role: "現像剤濃縮液" },
-      { name: "水", amount: 592.5, unit: "ml", perLiter: 592.5, role: "希釈用（600ml作業液の場合）" },
-    ],
-    mixingSteps: [
-      { instruction: "HC-110シロップをシリンジ等で正確に計量", tip: "希釈F = シロップ1:79。600mlなら7.5mlのシロップ" },
-      { instruction: "20°Cの水に加えてよく攪拌", tip: "シロップは粘度が高いのでしっかり混ぜる" },
-      { instruction: "作業温度（20°C）を確認", tip: "ワンショット・使用後廃棄。最低シロップ6ml/ロール" },
-    ],
-    shelfLife: "シロップ原液: 数年 / 作業液: 即時使用",
-  },
-  "rodinal": {
-    name: "Rodinal",
-    nameJa: "Rodinal / Adonal（超希釈）",
-    description: "1891年発売の最古の現像液処方。p-アミノフェノール系。超希釈（1:100〜1:200）でTech Panにカミソリのようなシャープネスとエッジ効果を与える。POTA・Technidolより高コントラスト。スタンド現像（2時間放置）も可能。現在はAdonal/Blazinal/R09として入手可。",
-    chemicals: [
-      { name: "Rodinal / Adonal原液", amount: 1, unit: "ml", perLiter: 1, role: "現像剤（1:100の場合）" },
-      { name: "水", amount: 100, unit: "ml", perLiter: 100, role: "希釈用" },
-    ],
-    mixingSteps: [
-      { instruction: "Rodinal原液をシリンジで正確に計量", tip: "1:100 = 5ml/500ml、1:150 = 3.3ml/500ml、1:200 = 2.5ml/500ml" },
-      { instruction: "20°Cの水に加えてよく攪拌", tip: "最低5ml/ロール（Adox推奨）" },
-      { instruction: "作業温度（20°C）を確認", tip: "ワンショット・使用後廃棄" },
-    ],
-    shelfLife: "原液: 事実上無期限 / 作業液: 即時使用",
+    shelfLife: "⚠️ ~1 hour (one-shot — must discard after use)",
   },
 };
 
 const FILMS = {
   "trix400": { name: "Kodak Tri-X 400", developers: { "d76": [
-    { ei: 400, dilution: "ストック", time: 405, temp: 20, agitation: "kodak", source: "Kodak F-4017", confidence: 5 },
+    { ei: 400, dilution: "Stock", time: 405, temp: 20, agitation: "kodak", source: "Kodak F-4017", confidence: 5 },
     { ei: 400, dilution: "1:1", time: 585, temp: 20, agitation: "kodak", source: "Kodak F-4017", confidence: 5 },
-    { ei: 1600, dilution: "ストック", time: 570, temp: 20, agitation: "kodak", source: "Kodak F-4017", confidence: 5 },
+    { ei: 1600, dilution: "Stock", time: 570, temp: 20, agitation: "kodak", source: "Kodak F-4017", confidence: 5 },
     { ei: 1600, dilution: "1:1", time: 795, temp: 20, agitation: "kodak", source: "Kodak F-4017", confidence: 5 },
   ]}},
   "tmax100": { name: "Kodak T-Max 100", developers: { "d76": [
-    { ei: 100, dilution: "ストック", time: 480, temp: 20, agitation: "kodak", source: "Kodak F-4016", confidence: 5 },
+    { ei: 100, dilution: "Stock", time: 480, temp: 20, agitation: "kodak", source: "Kodak F-4016", confidence: 5 },
     { ei: 100, dilution: "1:1", time: 630, temp: 20, agitation: "kodak", source: "Kodak F-4016", confidence: 5 },
   ]}},
   "tmax400": { name: "Kodak T-Max 400", developers: { "d76": [
-    { ei: 400, dilution: "ストック", time: 450, temp: 20, agitation: "kodak", source: "Kodak F-4043", confidence: 5 },
+    { ei: 400, dilution: "Stock", time: 450, temp: 20, agitation: "kodak", source: "Kodak F-4043", confidence: 5 },
     { ei: 400, dilution: "1:1", time: 615, temp: 20, agitation: "kodak", source: "Kodak F-4043", confidence: 5 },
-    { ei: 800, dilution: "ストック", time: 450, temp: 20, agitation: "kodak", source: "Kodak F-4043（変更不要）", confidence: 5 },
+    { ei: 800, dilution: "Stock", time: 450, temp: 20, agitation: "kodak", source: "Kodak F-4043 (no change needed)", confidence: 5 },
   ]}},
   "hp5": { name: "Ilford HP5 Plus", developers: { "d76": [
-    { ei: 400, dilution: "ストック", time: 450, temp: 20, agitation: "ilford", source: "Ilford公式", confidence: 5 },
-    { ei: 400, dilution: "1:1", time: 660, temp: 20, agitation: "ilford", source: "Ilford公式", confidence: 5 },
-    { ei: 800, dilution: "ストック", time: 570, temp: 20, agitation: "ilford", source: "Ilford公式", confidence: 5 },
-    { ei: 1600, dilution: "ストック", time: 750, temp: 20, agitation: "ilford", source: "Ilford公式", confidence: 5 },
+    { ei: 400, dilution: "Stock", time: 450, temp: 20, agitation: "ilford", source: "Ilford Official", confidence: 5 },
+    { ei: 400, dilution: "1:1", time: 660, temp: 20, agitation: "ilford", source: "Ilford Official", confidence: 5 },
+    { ei: 800, dilution: "Stock", time: 570, temp: 20, agitation: "ilford", source: "Ilford Official", confidence: 5 },
+    { ei: 1600, dilution: "Stock", time: 750, temp: 20, agitation: "ilford", source: "Ilford Official", confidence: 5 },
   ]}},
   "fp4": { name: "Ilford FP4 Plus", developers: { "d76": [
-    { ei: 125, dilution: "ストック", time: 510, temp: 20, agitation: "ilford", source: "Ilford公式", confidence: 4 },
+    { ei: 125, dilution: "Stock", time: 510, temp: 20, agitation: "ilford", source: "Ilford Official", confidence: 4 },
     { ei: 125, dilution: "1:1", time: 690, temp: 20, agitation: "ilford", source: "Ilford/MDC", confidence: 4 },
   ]}},
   "techpan": { name: "Kodak Technical Pan", developers: {
     "pota": [
-      { ei: 25, dilution: "ストック", time: 900, temp: 20, agitation: "pota", source: "Kodak 1980技術文書", confidence: 5 },
-      { ei: 25, dilution: "ストック", time: 720, temp: 24, agitation: "pota", source: "Photographer's Formulary", confidence: 4 },
-      { ei: 50, dilution: "ストック", time: 900, temp: 20, agitation: "pota", source: "Kodak文書", confidence: 4 },
-    ],
-    "easy-pota": [
-      { ei: 25, dilution: "作業液", time: 900, temp: 20, agitation: "pota", source: "POTA同等", confidence: 4 },
-    ],
-    "td3": [
-      { ei: 25, dilution: "作業液", time: 780, temp: 20, agitation: "td3a", source: "Formulary（方式A）", confidence: 4 },
-      { ei: 32, dilution: "作業液", time: 780, temp: 20, agitation: "td3a", source: "Formulary推奨", confidence: 4 },
-      { ei: 25, dilution: "作業液", time: 1260, temp: 20, agitation: "td3b", source: "Formulary（方式B）", confidence: 4 },
-      { ei: 25, dilution: "作業液", time: 600, temp: 26, agitation: "td3a", source: "Unblinking Eye", confidence: 3 },
-    ],
-    "hc110": [
-      { ei: 32, dilution: "希釈F (1:79)", time: 360, temp: 20, agitation: "kodak", source: "Kodak P-255", confidence: 5 },
-      { ei: 40, dilution: "希釈F (1:79)", time: 480, temp: 20, agitation: "kodak", source: "Kodak P-255", confidence: 5 },
-      { ei: 50, dilution: "希釈F (1:79)", time: 600, temp: 20, agitation: "kodak", source: "Kodak P-255", confidence: 5 },
-      { ei: 64, dilution: "希釈F (1:79)", time: 720, temp: 20, agitation: "kodak", source: "Kodak P-255", confidence: 5 },
-    ],
-    "rodinal": [
-      { ei: 12, dilution: "1:100", time: 300, temp: 22, agitation: "rodinal_std", source: "John Hicks", confidence: 3 },
-      { ei: 16, dilution: "1:100", time: 240, temp: 20, agitation: "rodinal_std", source: "Alex Luyckx", confidence: 3 },
-      { ei: 16, dilution: "1:150", time: 780, temp: 20, agitation: "rodinal_min", source: "John Carter", confidence: 3 },
-      { ei: 25, dilution: "1:250", time: 780, temp: 20, agitation: "rodinal_min", source: "Random Camera Blog", confidence: 3 },
-      { ei: 16, dilution: "1:200", time: 7200, temp: 20, agitation: "stand", source: "コミュニティ（スタンド現像）", confidence: 2 },
+      { ei: 25, dilution: "Stock", time: 900, temp: 20, agitation: "pota", source: "Kodak 1980 Technical Document", confidence: 5 },
+      { ei: 25, dilution: "Stock", time: 720, temp: 24, agitation: "pota", source: "Photographer's Formulary", confidence: 4 },
+      { ei: 50, dilution: "Stock", time: 900, temp: 20, agitation: "pota", source: "Kodak Document", confidence: 4 },
     ],
   }},
 };
 
 const PROCESS_STEPS = [
-  { id: "presoak", name: "プレソーク", nameShort: "前浴", duration: 60, optional: true, agitation: "continuous", description: "20°Cの水で1分。気泡防止・温度調整・デッドストックの均一化に有効",
-    note: "Ilfordフィルムでは湿潤剤が流出する可能性があるため非推奨。Tech Pan等のデッドストックでは推奨。" },
-  { id: "developer", name: "現像", nameShort: "現像", duration: null, optional: false, agitation: null, description: "フィルム・現像液の組み合わせに依存" },
-  { id: "stop", name: "停止浴", nameShort: "停止", duration: 30, optional: false, agitation: "continuous", description: "30秒・連続攪拌" },
-  { id: "fix", name: "定着", nameShort: "定着", duration: 300, optional: false, agitation: "kodak", description: "迅速定着液で5分" },
-  { id: "wash1", name: "水洗 (5回転倒)", nameShort: "水洗1", duration: 15, optional: false, agitation: "continuous", description: "Ilford方式: 水を入れて5回転倒" },
-  { id: "wash2", name: "水洗 (10回転倒)", nameShort: "水洗2", duration: 20, optional: false, agitation: "continuous", description: "Ilford方式: 水を入れて10回転倒" },
-  { id: "wash3", name: "水洗 (20回転倒)", nameShort: "水洗3", duration: 30, optional: false, agitation: "continuous", description: "Ilford方式: 水を入れて20回転倒" },
-  { id: "wetting", name: "水切り剤", nameShort: "水切", duration: 30, optional: false, agitation: "gentle5s", description: "Photo-Flo 1:200（蒸留水）30秒" },
+  { id: "presoak", name: "Pre-soak", nameShort: "Presoak", duration: 60, optional: true, agitation: "continuous", description: "1 min with 20°C water. Prevents bubbles, stabilizes temperature, promotes even saturation.",
+    note: "Not recommended for Ilford films as it may wash out wetting agents. Recommended for deadstock films like Tech Pan." },
+  { id: "developer", name: "Developer", nameShort: "Dev", duration: null, optional: false, agitation: null, description: "Depends on film and developer combination" },
+  { id: "stop", name: "Stop Bath", nameShort: "Stop", duration: 30, optional: false, agitation: "continuous", description: "30 sec continuous agitation" },
+  { id: "fix", name: "Fixer", nameShort: "Fix", duration: 300, optional: false, agitation: "kodak", description: "5 minutes with rapid fixer" },
+  { id: "wash1", name: "Wash (5 inversions)", nameShort: "Wash1", duration: 15, optional: false, agitation: "continuous", description: "Ilford method: fill and invert 5 times" },
+  { id: "wash2", name: "Wash (10 inversions)", nameShort: "Wash2", duration: 20, optional: false, agitation: "continuous", description: "Ilford method: fill and invert 10 times" },
+  { id: "wash3", name: "Wash (20 inversions)", nameShort: "Wash3", duration: 30, optional: false, agitation: "continuous", description: "Ilford method: fill and invert 20 times" },
+  { id: "wetting", name: "Wetting Agent", nameShort: "Wet", duration: 30, optional: false, agitation: "gentle5s", description: "Photo-Flo 1:200 (distilled water) 30 sec" },
 ];
 
 const AGITATION_PATTERNS = {
-  kodak: { name: "Kodak方式", initial: 30, interval: 30, duration: 10, desc: "最初30秒連続 → 30秒ごとに10秒攪拌" },
-  ilford: { name: "Ilford方式", initial: 10, interval: 60, duration: 10, desc: "最初10秒で4回転倒 → 1分ごとに4回転倒" },
-  pota: { name: "POTA方式", initial: 60, interval: 180, duration: 10, desc: "最初60秒連続 → 3分ごとに10秒（穏やかに・不規則に）" },
-  td3a: { name: "TD-3方式A", initial: 10, interval: 60, duration: 10, desc: "最初10秒で4回転倒 → 1分ごとに4回ゆっくり転倒" },
-  td3b: { name: "TD-3方式B", initial: 20, interval: 180, duration: 20, desc: "最初20秒で10回転倒 → 3分ごとに10回ゆっくり転倒（20秒間）" },
-  rodinal_std: { name: "Rodinal標準", initial: 30, interval: 60, duration: 10, desc: "最初30秒連続 → 1分ごとに10秒攪拌" },
-  rodinal_min: { name: "Rodinal最小攪拌", initial: 30, interval: 180, duration: 10, desc: "最初30秒連続 → 3分ごとに3回転倒" },
-  stand: { name: "スタンド現像", initial: 60, interval: 9999, duration: 0, desc: "最初60秒のみ攪拌。以降は完全に静置（触らない）" },
-  continuous: { name: "連続攪拌", initial: 0, interval: 1, duration: 999, desc: "常に攪拌し続ける" },
-  gentle5s: { name: "最初5秒のみ", initial: 5, interval: 9999, duration: 0, desc: "最初5秒だけ穏やかに攪拌" },
+  kodak: { name: "Kodak Method", initial: 30, interval: 30, duration: 5, desc: "30 sec continuous → 5 sec agitation every 30 sec" },
+  ilford: { name: "Ilford Method", initial: 10, interval: 60, duration: 10, desc: "4 inversions in first 10 sec → 4 inversions every 1 min" },
+  pota: { name: "POTA Method", initial: 60, interval: 60, duration: 5, desc: "60 sec continuous → 2 slow inversions every 1 min (~5 sec)" },
+  td3a: { name: "TD-3 Method A", initial: 10, interval: 60, duration: 10, desc: "4 inversions in first 10 sec → 4 slow inversions every 1 min" },
+  td3b: { name: "TD-3 Method B", initial: 20, interval: 180, duration: 20, desc: "10 inversions in first 20 sec → 10 slow inversions every 3 min (20 sec)" },
+  rodinal_std: { name: "Rodinal Standard", initial: 30, interval: 60, duration: 10, desc: "30 sec continuous → 10 sec agitation every 1 min" },
+  rodinal_min: { name: "Rodinal Minimal", initial: 30, interval: 180, duration: 10, desc: "30 sec continuous → 3 inversions every 3 min" },
+  stand: { name: "Stand Development", initial: 60, interval: 9999, duration: 0, desc: "Agitate first 60 sec only. Then completely still — do not touch." },
+  continuous: { name: "Continuous", initial: 0, interval: 1, duration: 999, desc: "Agitate continuously throughout" },
+  gentle5s: { name: "First 5 sec only", initial: 5, interval: 9999, duration: 0, desc: "Gentle agitation for first 5 sec only" },
 };
 
 const scaleInstruction = (text, scale) => {
@@ -224,7 +141,7 @@ const scaleInstruction = (text, scale) => {
 };
 
 const formatTime = (s) => { if (s < 0) s = 0; const m = Math.floor(s / 60); const sec = Math.floor(s % 60); return `${m}:${sec.toString().padStart(2, "0")}`; };
-const formatTimeJa = (s) => { const m = Math.floor(s / 60); const sec = s % 60; return sec === 0 ? `${m}分` : `${m}分${sec}秒`; };
+const formatTimeEn = (s) => { const m = Math.floor(s / 60); const sec = s % 60; return sec === 0 ? `${m} min` : `${m} min ${sec} sec`; };
 
 // ─── MAIN APP ──────────────────────────────────────────────────────
 function DarkroomApp() {
@@ -243,6 +160,7 @@ function DarkroomApp() {
     if (data?.ei !== undefined) setSelectedEI(data.ei);
     if (data?.combo !== undefined) setSelectedCombo(data.combo);
     if (data?.presoak !== undefined) setPresoak(data.presoak);
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -271,19 +189,19 @@ function HomeScreen({ navigate }) {
   return (
     <div style={S.screen}>
       <div style={S.heroSection}>
-        <h1 style={S.heroTitle}>◉ 暗室アシスタント</h1>
+        <h1 style={S.heroTitle}>◉ Darkroom Assistant</h1>
       </div>
-      <div style={S.sectionLabel}>現像液を選択</div>
+      <div style={S.sectionLabel}>Select Developer</div>
       {Object.entries(DEVELOPERS).map(([key, dev]) => (
         <div key={key} style={S.devCard}>
           <div style={{ flex: 1 }}>
             <div style={S.devName}>{dev.nameJa}</div>
             <div style={S.devDesc}>{dev.description}</div>
-            <div style={S.devShelf}>保存: {dev.shelfLife}</div>
+            <div style={S.devShelf}>Shelf life: {dev.shelfLife}</div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8, marginLeft: 12, flexShrink: 0 }}>
-            <button style={S.devBtnMix} onClick={() => navigate("mixing", { dev: key })}>🧪 調合</button>
-            <button style={S.devBtnTimer} onClick={() => navigate("filmSelect", { dev: key })}>⏱ タイマー</button>
+            <button style={S.devBtnMix} onClick={() => navigate("mixing", { dev: key })}>🧪 Mix</button>
+            <button style={S.devBtnTimer} onClick={() => navigate("filmSelect", { dev: key })}>⏱ Timer</button>
           </div>
         </div>
       ))}
@@ -314,18 +232,21 @@ function MixingScreen({ dev, volume, setVolume, navigate }) {
 
   return (
     <div style={S.screen}>
-      <button style={S.backBtn} onClick={() => navigate("home")}>← 戻る</button>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <button style={S.backBtn} onClick={() => navigate("home")}>← Back</button>
+        <button style={S.startBtnSmall} onClick={() => navigate("filmSelect", { dev })}>Start Timer →</button>
+      </div>
       <h2 style={S.screenTitle}>{d.nameJa}</h2>
-      <p style={S.screenSub}>調合ガイド</p>
+      <p style={S.screenSub}>Mixing Guide</p>
 
       <div style={S.volumeRow}>
-        <span style={S.volumeLabel}>調合量:</span>
+        <span style={S.volumeLabel}>Volume:</span>
         {[500, 1000, 2000].map(v => (
           <button key={v} style={{ ...S.volumeBtn, ...(volume === v ? S.volumeBtnActive : {}) }} onClick={() => setVolume(v)}>{v}ml</button>
         ))}
       </div>
 
-      <div style={S.sectionLabel}>必要な薬品</div>
+      <div style={S.sectionLabel}>Chemicals Required</div>
       <div style={S.chemList}>
         {d.chemicals.map((c, i) => (
           <div key={i} style={S.chemRow}>
@@ -341,7 +262,7 @@ function MixingScreen({ dev, volume, setVolume, navigate }) {
         ))}
       </div>
 
-      <div style={S.sectionLabel}>調合手順 — {doneCount} / {total}</div>
+      <div style={S.sectionLabel}>Mixing Steps — {doneCount} / {total}</div>
       <div style={S.progressTrack}>
         <div style={{ ...S.progressFill, width: `${(doneCount / total) * 100}%` }} />
       </div>
@@ -368,12 +289,8 @@ function MixingScreen({ dev, volume, setVolume, navigate }) {
       })}
 
       {doneCount === total && (
-        <div style={S.mixDoneMsg}>✓ 調合完了！</div>
+        <div style={S.mixDoneMsg}>✓ Mixing Complete!</div>
       )}
-
-      <button style={S.primaryBtn} onClick={() => navigate("filmSelect", { dev })}>
-        現像タイマーへ →
-      </button>
     </div>
   );
 }
@@ -384,10 +301,10 @@ function FilmSelectScreen({ dev, navigate }) {
   const films = Object.entries(FILMS).filter(([, f]) => f.developers[dev]);
   return (
     <div style={S.screen}>
-      <button style={S.backBtn} onClick={() => navigate("mixing", { dev })}>← 戻る</button>
-      <h2 style={S.screenTitle}>フィルム選択</h2>
+      <button style={S.backBtn} onClick={() => navigate("mixing", { dev })}>← Back</button>
+      <h2 style={S.screenTitle}>Select Film</h2>
       <p style={S.screenSub}>{d.nameJa}</p>
-      {films.length === 0 && <div style={S.emptyMsg}>対応フィルムデータなし</div>}
+      {films.length === 0 && <div style={S.emptyMsg}>No compatible film data</div>}
       {films.map(([key, film]) => (
         <button key={key} style={S.filmCard} onClick={() => navigate("eiSelect", { film: key })}>
           <div style={S.filmCardName}>{film.name}</div>
@@ -407,8 +324,8 @@ function EISelectScreen({ dev, film, navigate }) {
 
   return (
     <div style={S.screen}>
-      <button style={S.backBtn} onClick={() => navigate("filmSelect", { dev })}>← 戻る</button>
-      <h2 style={S.screenTitle}>感度（EI）を選択</h2>
+      <button style={S.backBtn} onClick={() => navigate("filmSelect", { dev })}>← Back</button>
+      <h2 style={S.screenTitle}>Select Film Speed (EI)</h2>
       <p style={S.screenSub}>{f.name}</p>
       {eis.map((ei, i) => {
         const isBox = ei === boxEI;
@@ -419,7 +336,7 @@ function EISelectScreen({ dev, film, navigate }) {
             <div style={{ flex: 1 }}>
               <div style={S.eiValue}>EI {ei}</div>
               <div style={S.eiLabel}>
-                {isBox ? "標準（ボックス速度）" : `増感 +${pushStops}段`}
+                {isBox ? "Box speed (standard)" : `Push +${pushStops} stop${pushStops > 1 ? "s" : ""}`}
               </div>
             </div>
             <div style={S.devArrow}>→</div>
@@ -437,8 +354,8 @@ function DilutionSelectScreen({ dev, film, ei, navigate }) {
 
   return (
     <div style={S.screen}>
-      <button style={S.backBtn} onClick={() => navigate("eiSelect", { film, dev })}>← 戻る</button>
-      <h2 style={S.screenTitle}>希釈を選択</h2>
+      <button style={S.backBtn} onClick={() => navigate("eiSelect", { film, dev })}>← Back</button>
+      <h2 style={S.screenTitle}>Select Dilution</h2>
       <p style={S.screenSub}>{f.name} / EI {ei}</p>
       {combos.map((combo, i) => (
         <button key={i} style={S.dilCard} onClick={() => navigate("timer", { combo, film, dev })}>
@@ -447,7 +364,7 @@ function DilutionSelectScreen({ dev, film, ei, navigate }) {
             <div style={S.dilSub}>{combo.source}</div>
           </div>
           <div style={{ textAlign: "right", marginRight: 12 }}>
-            <div style={S.dilTime}>{formatTimeJa(combo.time)}</div>
+            <div style={S.dilTime}>{formatTimeEn(combo.time)}</div>
             <div style={S.dilTemp}>{combo.temp}°C</div>
           </div>
           <div style={S.comboStars}>{"★".repeat(combo.confidence)}{"☆".repeat(5 - combo.confidence)}</div>
@@ -463,28 +380,28 @@ function buildAgitationSchedule(duration, agitationKey) {
   if (!pat || !duration) return [];
   const schedule = [];
 
-  if (pat.name === "連続攪拌") {
-    schedule.push({ start: 0, end: duration, type: "agitate", label: "連続攪拌" });
+  if (agitationKey === "continuous") {
+    schedule.push({ start: 0, end: duration, type: "agitate", label: "Continuous" });
     return schedule;
   }
-  if (pat.name === "最初5秒のみ") {
-    schedule.push({ start: 0, end: Math.min(5, duration), type: "agitate", label: "穏やかに攪拌" });
-    if (duration > 5) schedule.push({ start: 5, end: duration, type: "rest", label: "静置" });
+  if (agitationKey === "gentle5s") {
+    schedule.push({ start: 0, end: Math.min(5, duration), type: "agitate", label: "Gentle agitation" });
+    if (duration > 5) schedule.push({ start: 5, end: duration, type: "rest", label: "Rest" });
     return schedule;
   }
 
   // Initial continuous
-  schedule.push({ start: 0, end: Math.min(pat.initial, duration), type: "agitate", label: "連続攪拌" });
+  schedule.push({ start: 0, end: Math.min(pat.initial, duration), type: "agitate", label: "Continuous" });
   let t = pat.initial;
   let cycleNum = 1;
   while (t < duration) {
     const restEnd = Math.min(t + pat.interval - pat.duration, duration);
     if (t < duration) {
-      schedule.push({ start: t, end: restEnd, type: "rest", label: "静置" });
+      schedule.push({ start: t, end: restEnd, type: "rest", label: "Rest" });
     }
     if (restEnd < duration) {
       const agEnd = Math.min(restEnd + pat.duration, duration);
-      schedule.push({ start: restEnd, end: agEnd, type: "agitate", label: `攪拌 #${cycleNum}` });
+      schedule.push({ start: restEnd, end: agEnd, type: "agitate", label: `Agitate #${cycleNum}` });
       cycleNum++;
       t = restEnd + pat.duration + (pat.interval - pat.duration);
       // Actually let's simplify - t advances by interval
@@ -500,11 +417,11 @@ function buildSchedule(totalDuration, agitationKey) {
   if (!pat || !totalDuration) return [];
   const items = [];
 
-  if (pat.name === "連続攪拌") {
+  if (agitationKey === "continuous") {
     items.push({ start: 0, end: totalDuration, type: "agitate" });
     return items;
   }
-  if (pat.name === "最初5秒のみ") {
+  if (agitationKey === "gentle5s") {
     items.push({ start: 0, end: Math.min(5, totalDuration), type: "agitate" });
     if (totalDuration > 5) items.push({ start: 5, end: totalDuration, type: "rest" });
     return items;
@@ -572,47 +489,54 @@ function TimerScreen({ combo, film, dev, presoak, setPresoak, navigate }) {
   return (
     <div style={S.screen}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <button style={S.backBtn} onClick={() => navigate("filmSelect", { dev })}>← 戻る</button>
-        <button style={S.startBtnSmall} onClick={() => { unlockAudio(); navigate("process", { combo, film, dev }); }}>現像タイマーへ →</button>
+        <button style={S.backBtn} onClick={() => navigate("filmSelect", { dev })}>← Back</button>
+        <button style={S.startBtnSmall} onClick={() => { unlockAudio(); navigate("process", { combo, film, dev }); }}>Start Timer →</button>
       </div>
-      <h2 style={{ ...S.screenTitle, marginTop: 0 }}>現像設定確認</h2>
+      <h2 style={{ ...S.screenTitle, marginTop: 0 }}>Development Settings</h2>
 
       <div style={S.confirmGrid}>
-        {/* 全幅: フィルム */}
+        {/* Full width: Film */}
         <div style={{ ...S.confirmCell, gridColumn: "1 / -1" }}>
-          <div style={S.confirmLabel}>フィルム</div>
+          <div style={S.confirmLabel}>Film</div>
           <div style={S.confirmVal}>{f.name}</div>
         </div>
-        {/* 全幅: 現像液 */}
+        {/* Full width: Developer */}
         <div style={{ ...S.confirmCell, gridColumn: "1 / -1" }}>
-          <div style={S.confirmLabel}>現像液</div>
+          <div style={S.confirmLabel}>Developer</div>
           <div style={S.confirmVal}>{DEVELOPERS[dev].nameJa}</div>
         </div>
-        {/* 2列: EI・希釈 */}
+        {/* 2 columns: EI / Dilution */}
         <div style={S.confirmCell}>
-          <div style={S.confirmLabel}>感度（EI）</div>
+          <div style={S.confirmLabel}>Film Speed (EI)</div>
           <div style={{ ...S.confirmVal, fontSize: 18, fontWeight: 700, color: "#c8a87c" }}>{combo.ei}</div>
         </div>
         <div style={S.confirmCell}>
-          <div style={S.confirmLabel}>希釈</div>
+          <div style={S.confirmLabel}>Dilution</div>
           <div style={S.confirmVal}>{combo.dilution}</div>
         </div>
-        {/* 2列: 温度・攪拌 */}
+        {/* 2 columns: Temperature / Agitation */}
         <div style={S.confirmCell}>
-          <div style={S.confirmLabel}>温度</div>
+          <div style={S.confirmLabel}>Temperature</div>
           <div style={S.confirmVal}>{combo.temp}°C</div>
         </div>
         <div style={S.confirmCell}>
-          <div style={S.confirmLabel}>攪拌</div>
+          <div style={S.confirmLabel}>Agitation</div>
           <div style={{ ...S.confirmVal, fontSize: 12 }}>{pat.name}</div>
+          {pat.desc && <div style={{ fontSize: 11, color: "#8a7a66", marginTop: 4, lineHeight: 1.5 }}>{pat.desc}</div>}
         </div>
-        {/* 全幅: 現像時間（大きく） */}
+        {/* Full width: Development Time (large) */}
         <div style={{ ...S.confirmCell, gridColumn: "1 / -1", background: "rgba(200,168,124,0.06)", textAlign: "center" }}>
-          <div style={S.confirmLabel}>現像時間</div>
-          <div style={S.confirmValBig}>{formatTimeJa(combo.time)}</div>
+          <div style={S.confirmLabel}>Development Time</div>
+          <div style={S.confirmValBig}>{formatTimeEn(combo.time)}</div>
+        </div>
+        {/* Full width: Total time */}
+        <div style={{ ...S.confirmCell, gridColumn: "1 / -1", textAlign: "center" }}>
+          <div style={S.confirmLabel}>Total Process Time (est.)</div>
+          <div style={{ ...S.confirmVal, fontSize: 18, color: "#8ab88a" }}>~{Math.round(totalTime / 60)} min</div>
+          <div style={{ fontSize: 10, color: "#5a4a36", marginTop: 2 }}>Dev + Stop + Fix + Wash + Wetting{presoak ? " + Pre-soak" : ""}</div>
         </div>
       </div>
-      <div style={{ fontSize: 11, color: "#5a4a36", marginTop: 4, textAlign: "right" }}>出典: {combo.source}</div>
+      <div style={{ fontSize: 11, color: "#5a4a36", marginTop: 4, textAlign: "right" }}>Source: {combo.source}</div>
 
       {/* ── PRESOAK TOGGLE ── */}
       <div style={{
@@ -623,8 +547,8 @@ function TimerScreen({ combo, film, dev, presoak, setPresoak, navigate }) {
       }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: presoak ? 8 : 0 }}>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: "#e0d4c2" }}>💧 プレソーク（前浴）</div>
-            <div style={{ fontSize: 12, color: "#8a7a66", marginTop: 2 }}>現像液の前に20°Cの水で1分</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: "#e0d4c2" }}>💧 Pre-soak</div>
+            <div style={{ fontSize: 12, color: "#8a7a66", marginTop: 2 }}>1 min with 20°C water before developer</div>
           </div>
           <button
             onClick={() => setPresoak(p => !p)}
@@ -646,16 +570,16 @@ function TimerScreen({ combo, film, dev, presoak, setPresoak, navigate }) {
         {presoak && (
           <div style={{ fontSize: 12, color: "#a09080", lineHeight: 1.5 }}>
             {isTechPan
-              ? "✅ デッドストックのTech Panでは推奨。エマルジョンの膨潤状態を均一にし、ステンレスタンクでの気泡を防止します。"
+              ? "✅ Recommended for deadstock Tech Pan. Equalizes emulsion swelling and prevents bubbles in stainless tanks."
               : isIlford
-              ? "⚠️ Ilfordフィルムにはエマルジョンの湿潤剤が含まれており、プレソークで流出する可能性があります。Ilford公式は非推奨。"
-              : "気泡防止とタンクの温度調整に有効。現像時間が短い場合（5分以下）は特に推奨。"}
+              ? "⚠️ Ilford films contain emulsion wetting agents that may wash out during pre-soak. Not recommended per Ilford official guidance."
+              : "Useful for preventing bubbles and stabilizing tank temperature. Especially recommended when development time is short (5 min or less)."}
           </div>
         )}
       </div>
 
       {/* ── AGITATION SCHEDULE (dev step only) ── */}
-      <div style={{ ...S.sectionLabel, marginTop: 20 }}>現像の攪拌スケジュール</div>
+      <div style={{ ...S.sectionLabel, marginTop: 20 }}>Development Agitation Schedule</div>
       <div style={{
         background: "rgba(255,255,255,0.02)", borderRadius: 12, overflow: "hidden",
         border: "1px solid rgba(200,168,124,0.1)",
@@ -685,24 +609,24 @@ function TimerScreen({ combo, film, dev, presoak, setPresoak, navigate }) {
               }} />
               {/* Label */}
               <div style={{ flex: 1, fontSize: 14, color: isAg ? "#e8a060" : "#7a6a56", fontWeight: isAg ? 600 : 400 }}>
-                {isAg ? "🔄 攪拌" : "⏸ 静置"}
+                {isAg ? "🔄 Agitate" : "⏸ Rest"}
               </div>
               {/* Duration */}
               <div style={{ fontSize: 12, color: "#6a5a46", fontVariantNumeric: "tabular-nums" }}>
-                {dur >= 60 ? formatTimeJa(dur) : `${dur}秒`}
+                {dur >= 60 ? formatTimeEn(dur) : `${dur}s`}
               </div>
             </div>
           );
         })}
       </div>
       <div style={{ fontSize: 11, color: "#6a5a46", marginTop: 6, lineHeight: 1.5 }}>
-        攪拌回数: {devSchedule.filter(s => s.type === "agitate").length}回 / 
-        攪拌合計: {formatTimeJa(devSchedule.filter(s => s.type === "agitate").reduce((a, s) => a + s.end - s.start, 0))} / 
-        静置合計: {formatTimeJa(devSchedule.filter(s => s.type === "rest").reduce((a, s) => a + s.end - s.start, 0))}
+        Agitation cycles: {devSchedule.filter(s => s.type === "agitate").length} /
+        Total agitation: {formatTimeEn(devSchedule.filter(s => s.type === "agitate").reduce((a, s) => a + s.end - s.start, 0))} /
+        Total rest: {formatTimeEn(devSchedule.filter(s => s.type === "rest").reduce((a, s) => a + s.end - s.start, 0))}
       </div>
 
       {/* ── FULL PROCESS OVERVIEW ── */}
-      <div style={{ ...S.sectionLabel, marginTop: 20 }}>全工程スケジュール（合計 {formatTimeJa(totalTime)}）</div>
+      <div style={{ ...S.sectionLabel, marginTop: 20 }}>Full Process Schedule (total {formatTimeEn(totalTime)})</div>
       <div style={{
         background: "rgba(255,255,255,0.02)", borderRadius: 12, overflow: "hidden",
         border: "1px solid rgba(200,168,124,0.1)",
@@ -712,7 +636,7 @@ function TimerScreen({ combo, film, dev, presoak, setPresoak, navigate }) {
             display: "flex", alignItems: "center", gap: 10,
             padding: "12px 14px",
             borderBottom: i < fullSchedule.length - 1 ? "1px solid rgba(200,168,124,0.06)" : "none",
-            background: step.stepName === "現像" ? "rgba(200,168,124,0.04)" : "transparent",
+            background: step.stepName === "Developer" ? "rgba(200,168,124,0.04)" : "transparent",
           }}>
             <div style={{ minWidth: 36, fontSize: 12, fontWeight: 700, color: "#c8a87c", textAlign: "center" }}>
               {i + 1}
@@ -724,7 +648,7 @@ function TimerScreen({ combo, film, dev, presoak, setPresoak, navigate }) {
               </div>
             </div>
             <div style={{ fontSize: 15, fontWeight: 700, color: "#c8a87c", fontVariantNumeric: "tabular-nums" }}>
-              {formatTimeJa(step.duration)}
+              {formatTimeEn(step.duration)}
             </div>
           </div>
         ))}
@@ -735,11 +659,11 @@ function TimerScreen({ combo, film, dev, presoak, setPresoak, navigate }) {
         background: "rgba(200,168,124,0.06)", borderRadius: 12, padding: 14, marginTop: 16,
         border: "1px solid rgba(200,168,124,0.12)",
       }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: "#c8a87c", marginBottom: 6 }}>🔊 音とアラートについて</div>
+        <div style={{ fontSize: 13, fontWeight: 600, color: "#c8a87c", marginBottom: 6 }}>🔊 About sounds & alerts</div>
         <p style={{ fontSize: 12, color: "#a09080", margin: 0, lineHeight: 1.6 }}>
-          タイマー画面では、攪拌・静置の切り替え時に<b>ビープ音</b>が鳴ります（攪拌開始＝高音2回、静置＝低音1回、工程完了＝3連音）。
-          ビープ音は常に鳴ります。音声ON（日本語読み上げ）はタイマー画面右上のボタンで切り替えできます。
-          iPhoneの音量を上げ、マナーモードを解除してご使用ください。
+          During the timer, a <b>beep sound</b> plays at each agitation/rest transition (agitation start = 2 high beeps, rest = 1 low beep, step complete = 3-beep sequence).
+          Beeps always play. Voice guidance can be toggled with the button at the top right of the timer screen.
+          Please raise the iPhone volume and disable silent mode.
         </p>
       </div>
 
@@ -754,9 +678,9 @@ function AgitationTimeline({ duration, agitationKey, elapsedInStep }) {
 
   // Build segments: [{start, end, type: "agitate"|"rest"}]
   const segments = [];
-  if (pat.name === "連続攪拌") {
+  if (agitationKey === "continuous") {
     segments.push({ start: 0, end: duration, type: "agitate" });
-  } else if (pat.name === "最初5秒のみ") {
+  } else if (agitationKey === "gentle5s") {
     segments.push({ start: 0, end: Math.min(5, duration), type: "agitate" });
     if (duration > 5) segments.push({ start: 5, end: duration, type: "rest" });
   } else {
@@ -806,17 +730,26 @@ function AgitationTimeline({ duration, agitationKey, elapsedInStep }) {
       </div>
       {/* Legend */}
       <div style={{ display: "flex", gap: 16, marginTop: 6, fontSize: 10, color: "#8a7a66" }}>
-        <span><span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: "rgba(255,107,53,0.5)", marginRight: 4, verticalAlign: "middle" }}/>攪拌</span>
-        <span><span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: "rgba(255,255,255,0.08)", marginRight: 4, verticalAlign: "middle" }}/>静置</span>
+        <span><span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: "rgba(255,107,53,0.5)", marginRight: 4, verticalAlign: "middle" }}/>Agitate</span>
+        <span><span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: "rgba(255,255,255,0.08)", marginRight: 4, verticalAlign: "middle" }}/>Rest</span>
       </div>
     </div>
   );
 }
 
-// ─── AUDIO ENGINE (iOS Safari対応) ──────────────────────────────────
+// ─── AUDIO ENGINE (iOS Safari compatible) ───────────────────────────
 // AudioContext for reliable beep sounds (works even when speech fails)
 let audioCtx = null;
 let audioUnlocked = false;
+
+// Voices cache: load eagerly and keep updated
+let cachedVoices = [];
+if (typeof window !== "undefined" && window.speechSynthesis) {
+  cachedVoices = window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => {
+    cachedVoices = window.speechSynthesis.getVoices();
+  };
+}
 
 const initAudio = () => {
   if (audioCtx) return;
@@ -839,14 +772,11 @@ const unlockAudio = () => {
   src.connect(audioCtx.destination);
   src.start(0);
   audioUnlocked = true;
-  // Also try to unlock speech
+  // Unlock sharedAudio for iOS
   try {
-    if (window.speechSynthesis) {
-      const u = new SpeechSynthesisUtterance("。");
-      u.lang = "ja-JP"; u.volume = 0.01;
-      window.speechSynthesis.speak(u);
-    }
-  } catch (e) {}
+    sharedAudio.src = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
+    sharedAudio.play().catch(() => {});
+  } catch(e) {}
 };
 
 // Beep sound: freq in Hz, duration in ms
@@ -887,35 +817,53 @@ const beepComplete = () => {
 // Countdown tick
 const beepTick = () => beep(660, 80, 0.15);
 
-// Speech synthesis (may or may not work on iOS)
-const speak = (text, lang = "ja-JP") => {
+// Pre-recorded audio map
+const AUDIO_MAP = {
+  "Starting development. Please agitate.": "start_develop",
+  "Please agitate.": "agitate",
+  "Please rest.": "rest",
+  "One minute left. Prepare stop bath.": "one_minute",
+  "Last agitation. Prepare stop bath.": "last_agitate",
+  "Please drain.": "drain",
+  "Pour in stop bath.": "stop_bath",
+  "Discard and prepare fixer.": "discard_fix",
+  "Process complete.": "complete",
+  "Agitate in 5 seconds.": "pre_agitate",
+  "Starting fixer.": "fix_start",
+  "Starting wash.": "wash_start",
+  "Starting wetting agent.": "wetting_start",
+  "Starting pre-soak. Please agitate.": "presoak_start",
+  "10 seconds left. Prepare stop bath.": "final_ten",
+  "Pour in stop bath. Agitate for one minute.": "stop_bath",
+  "Voice on.": "voice_on",
+  "1":"n1","2":"n2","3":"n3","4":"n4","5":"n5",
+  "6":"n6","7":"n7","8":"n8","9":"n9","10":"n10",
+};
+
+const sharedAudio = new Audio();
+const speak = (text) => {
+  const file = AUDIO_MAP[text];
+  if (!file) return;
   try {
-    if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = lang;
-    u.rate = 0.95;   // ゆっくりめで滑らか
-    u.pitch = 1.15;  // やや高めで女性的に
-    u.volume = 1.0;
-    const voices = window.speechSynthesis.getVoices();
-    // iOS日本語女性ボイス優先順: O-Ren (enhanced) > Kyoko > any ja female
-    const preferred = ["O-Ren", "Kyoko", "Haruka", "Sayaka"];
-    let chosen = null;
-    for (const name of preferred) {
-      chosen = voices.find(v => v.lang.startsWith("ja") && v.name.includes(name));
-      if (chosen) break;
+    sharedAudio.onended = null;
+    sharedAudio.pause();
+    sharedAudio.currentTime = 0;
+    sharedAudio.src = `audio/${file}.wav`;
+    sharedAudio.play().catch(() => {});
+  } catch (e) {}
+};
+
+let wakeLock = null;
+const requestWakeLock = async () => {
+  try {
+    if ("wakeLock" in navigator) {
+      wakeLock = await navigator.wakeLock.request("screen");
+      wakeLock.addEventListener("release", () => { wakeLock = null; });
     }
-    // Fallback: any Japanese voice that's NOT male (Otoya)
-    if (!chosen) {
-      chosen = voices.find(v => v.lang.startsWith("ja") && !v.name.includes("Otoya") && !v.name.includes("Hattori"));
-    }
-    // Final fallback: any Japanese voice
-    if (!chosen) {
-      chosen = voices.find(v => v.lang.startsWith("ja"));
-    }
-    if (chosen) u.voice = chosen;
-    window.speechSynthesis.speak(u);
-  } catch (e) { /* speech not available */ }
+  } catch(e){}
+};
+const releaseWakeLock = () => {
+  if (wakeLock) { wakeLock.release(); wakeLock = null; }
 };
 
 // Combined: beep (always) + speech (if enabled and available)
@@ -971,7 +919,7 @@ function TankAnimation({ isAgitating, isRunning }) {
         color: active ? "#ff6b35" : "#5a4a36",
         transition: "color 0.3s",
       }}>
-        {active ? "転倒攪拌中" : isRunning ? "静置中" : "待機中"}
+        {active ? "Agitating" : isRunning ? "Resting" : "Standby"}
       </div>
     </div>
   );
@@ -985,10 +933,14 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
   const [running, setRunning] = useState(false);
   const [alert, setAlert] = useState("");
   const [done, setDone] = useState(false);
-  const [voiceOn, setVoiceOn] = useState(true);
+  const [voiceOn, setVoiceOn] = useState(() => localStorage.getItem("voiceOn") !== "false");
   const [countdown, setCountdown] = useState(null); // null or number 5,4,3,2,1
+  const [devStartTime, setDevStartTime] = useState(() => localStorage.getItem("devStartTime") || null);
   const ref = useRef(null);
   const lastSpokenRef = useRef(""); // prevent repeating same announcement
+  const voiceOnRef = useRef(voiceOn);
+  const wasAgitatingRef = useRef(false); // track previous agitation state (avoid stale closure)
+  useEffect(() => { voiceOnRef.current = voiceOn; }, [voiceOn]);
 
   const steps = PROCESS_STEPS
     .filter(s => !s.optional || (s.id === "presoak" && presoak))
@@ -1002,19 +954,43 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
   const globalRemaining = totalTime - globalElapsed;
 
   const goStep = useCallback((i) => {
-    if (i >= steps.length) { setDone(true); setRunning(false); return; }
+    if (i >= steps.length) { setDone(true); setRunning(false); localStorage.removeItem("devStartTime"); return; }
     setStepIdx(i); setTimeLeft(steps[i].duration); setAlert(""); setCountdown(null);
     lastSpokenRef.current = "";
+    wasAgitatingRef.current = false;
   }, [steps]);
 
   useEffect(() => { goStep(0); }, []);
+
+  // Auto-advance: developer → stop bath (10 sec delay with announcement)
+  useEffect(() => {
+    if (!running && timeLeft === 0 && cur?.id === "developer") {
+      const nextIdx = stepIdx + 1;
+      if (nextIdx < steps.length && steps[nextIdx]?.id === "stop") {
+        const t1 = setTimeout(() => {
+          if (voiceOnRef.current) speak("Pour in stop bath. Agitate for one minute.");
+        }, 5000);
+        const t2 = setTimeout(() => {
+          goStep(nextIdx);
+          setRunning(true);
+        }, 10000);
+        return () => { clearTimeout(t1); clearTimeout(t2); };
+      }
+    }
+  }, [running, timeLeft, stepIdx]);
+
+  // Wake Lock: prevent screen sleep while timer is running
+  useEffect(() => {
+    if (running) requestWakeLock();
+    else releaseWakeLock();
+    return () => releaseWakeLock();
+  }, [running]);
 
   // Init audio + load voices
   useEffect(() => {
     initAudio();
     try {
-      window.speechSynthesis?.getVoices();
-      if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+      // cachedVoices is managed at module level (do not overwrite)
     } catch(e){}
   }, []);
 
@@ -1024,10 +1000,15 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
         setTimeLeft(p => {
           if (p <= 1) {
             setRunning(false);
-            setAlert("⏰ 工程完了！次へ進んでください");
+            setAlert("⏰ Step complete! Proceed to next step.");
             setCountdown(null);
             beepComplete();
             try { navigator.vibrate?.([200,100,200,100,200]); } catch(e){}
+            if (voiceOnRef.current) {
+              if (cur?.id === "developer") speak("Pour in stop bath.");
+              else if (cur?.id === "stop") speak("Discard and prepare fixer.");
+              else speak("Process complete.");
+            }
             return 0;
           }
           return p - 1;
@@ -1047,21 +1028,21 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
     let newCountdown = null;
 
     // Determine agitation state
-    if (pat.name === "連続攪拌") {
-      newAlert = "🔄 連続攪拌中";
-    } else if (pat.name === "最初5秒のみ") {
-      newAlert = e < 5 ? "🔄 穏やかに攪拌" : "⏸ 静置";
+    if (cur.agitation === "continuous") {
+      newAlert = "🔄 Agitating continuously";
+    } else if (cur.agitation === "gentle5s") {
+      newAlert = e < 5 ? "🔄 Gentle agitation" : "⏸ Rest";
     } else {
       // Complex pattern with initial + interval cycles
       if (e < pat.initial) {
-        newAlert = "🔄 攪拌してください";
+        newAlert = "🔄 Agitate now";
       } else {
         const sinceInitial = e - pat.initial;
         const inCycle = sinceInitial % pat.interval;
         if (inCycle < pat.duration) {
-          newAlert = "🔄 攪拌してください";
+          newAlert = "🔄 Agitate now";
         } else {
-          newAlert = "⏸ 静置";
+          newAlert = "⏸ Rest";
           // Check if countdown to next agitation
           const timeToNext = pat.interval - inCycle;
           if (timeToNext <= 5 && timeToNext > 0) {
@@ -1072,44 +1053,70 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
     }
 
     // Sound + voice logic: on state transitions
-    const isNowAgitating = newAlert.includes("攪拌");
-    const wasAgitating = alert.includes("攪拌");
+    const isNowAgitating = newAlert.includes("Agitat") || newAlert.includes("agitat");
+    const wasAgitating = wasAgitatingRef.current;
+    wasAgitatingRef.current = isNowAgitating;
+    const isDeveloper = cur.id === "developer";
+    const inFinalCountdown = !cur.manual && timeLeft <= 15 && timeLeft > 0;
     let soundType = null;
     let speechText = "";
 
-    if (isNowAgitating && !wasAgitating) {
-      soundType = "agitate";
-      speechText = "攪拌してください";
-      try { navigator.vibrate?.(100); } catch(e){}
-    } else if (!isNowAgitating && wasAgitating && !newAlert.includes("完了")) {
-      soundType = "rest";
-      speechText = "静置";
+    // Suppress agitation pre-countdown in final 15 sec
+    if (inFinalCountdown) newCountdown = null;
+
+    // Agitate/rest transition sounds (suppressed during final 10-second countdown)
+    if (!inFinalCountdown) {
+      if (isNowAgitating && !wasAgitating) {
+        soundType = "agitate";
+        // timeLeft === cur.duration means step just started → skip to avoid overlap with step-transition useEffect sound
+        if (timeLeft < cur.duration) {
+          speechText = "Please agitate.";
+        }
+        try { navigator.vibrate?.(100); } catch(e){}
+      } else if (!isNowAgitating && wasAgitating && !newAlert.includes("complete") && !newAlert.includes("Complete")) {
+        soundType = "rest";
+        speechText = "Please rest.";
+      }
     }
 
-    // Countdown
+    // Agitation pre-countdown (outside of final 65 seconds)
     if (newCountdown !== null && newCountdown !== countdown) {
-      if (newCountdown === 5) { soundType = "tick"; speechText = "5秒後に攪拌"; }
+      if (newCountdown === 5) { soundType = "tick"; speechText = "Agitate in 5 seconds."; }
       else if (newCountdown <= 3) { soundType = "tick"; speechText = `${newCountdown}`; }
     }
 
+    // Final 15-second countdown: T-10 announce → numbers from T-5
+    if (inFinalCountdown) {
+      soundType = "tick";
+      if (isDeveloper) {
+        if (timeLeft === 10) speechText = "10 seconds left. Prepare stop bath.";
+        else if (timeLeft === 5) speechText = "Please drain.";
+        else if (timeLeft < 5) speechText = `${timeLeft}`;
+      } else {
+        if (timeLeft <= 5) speechText = `${timeLeft}`;
+      }
+    }
+
     // Step completion
-    if (newAlert.includes("完了") && lastSpokenRef.current !== "complete") {
+    if ((newAlert.includes("complete") || newAlert.includes("Complete")) && lastSpokenRef.current !== "complete") {
       soundType = "complete";
-      speechText = "工程完了。次へ進んでください";
+      speechText = isDeveloper ? "Pour in stop bath." : "Process complete.";
       lastSpokenRef.current = "complete";
     }
 
     setAlert(newAlert);
     setCountdown(newCountdown);
 
-    // Beeps always play; speech only when voiceOn
-    if (soundType && speechText !== lastSpokenRef.current) {
+    // Beeps always play on transitions; speech only when voiceOn and text is set
+    if (soundType) {
       if (soundType === "agitate") beepAgitate();
       else if (soundType === "rest") beepRest();
       else if (soundType === "complete") beepComplete();
       else if (soundType === "tick") beepTick();
-      if (voiceOn) speak(speechText);
-      if (!speechText.match(/^[0-9]$/)) lastSpokenRef.current = speechText;
+      if (voiceOn && speechText && speechText !== lastSpokenRef.current) {
+        speak(speechText);
+        if (!speechText.match(/^[0-9]$/)) lastSpokenRef.current = speechText;
+      }
     }
   }, [timeLeft, running, cur, pat, voiceOn]);
 
@@ -1118,8 +1125,21 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
     if (running && cur) {
       beep(660, 200, 0.3);
       if (voiceOn) {
-        const msg = cur.name + "を開始します";
-        speak(msg);
+        const msgMap = {
+          presoak: "Starting pre-soak. Please agitate.",
+          developer: "Starting development. Please agitate.",
+          stop: "Pour in stop bath.",
+          fix: "Starting fixer.",
+          wash1: "Starting wash.", wash2: "Starting wash.", wash3: "Starting wash.",
+          wetting: "Starting wetting agent.",
+        };
+        const agitateAfter = ["stop", "fix", "wash1", "wash2", "wash3", "wetting"];
+        if (msgMap[cur.id]) {
+          speak(msgMap[cur.id]);
+          if (agitateAfter.includes(cur.id)) {
+            sharedAudio.onended = () => { sharedAudio.onended = null; if (voiceOnRef.current) speak("Please agitate."); };
+          }
+        }
       }
     }
   }, [stepIdx, running]);
@@ -1128,26 +1148,29 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
     <div style={S.screen}>
       <div style={{ textAlign: "center", paddingTop: 80 }}>
         <div style={{ fontSize: 64, color: "#5a9a6a", marginBottom: 16 }}>✓</div>
-        <h2 style={{ fontSize: 28, fontWeight: 700, color: "#f0e6d4", margin: "0 0 8px" }}>現像完了！</h2>
-        <p style={{ fontSize: 14, color: "#8a7a66", marginBottom: 8 }}>フィルムを吊るして乾燥させてください</p>
-        <p style={{ fontSize: 14, color: "#8a7a66", marginBottom: 24 }}>総処理時間: {formatTimeJa(totalElapsed)}</p>
-        <button style={S.primaryBtn} onClick={() => navigate("home")}>ホームへ戻る</button>
+        <h2 style={{ fontSize: 28, fontWeight: 700, color: "#f0e6d4", margin: "0 0 8px" }}>Processing Complete!</h2>
+        <p style={{ fontSize: 14, color: "#8a7a66", marginBottom: 8 }}>Hang the film to dry</p>
+        <p style={{ fontSize: 14, color: "#8a7a66", marginBottom: 24 }}>Total processing time: {formatTimeEn(totalElapsed)}</p>
+        <button style={S.primaryBtn} onClick={() => navigate("home")}>Back to Home</button>
       </div>
     </div>
   );
 
-  const agitating = alert.includes("攪拌");
+  const agitating = alert.includes("Agitat") || alert.includes("agitat");
   const stepProgress = cur ? (elapsedInStep / cur.duration) * 100 : 0;
 
   return (
     <div style={{ ...S.screen, padding: "0 16px 40px", ...(agitating && running ? S.screenAgitate : {}) }}>
       {/* Header row: back + voice toggle */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <button style={S.backBtn} onClick={() => { setRunning(false); try{window.speechSynthesis?.cancel();}catch(e){} navigate("timer", { combo, film, dev }); }}>← 中止</button>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+          <button style={S.backBtn} onClick={() => { setRunning(false); try{window.speechSynthesis?.cancel();}catch(e){} navigate("timer", { combo, film, dev }); }}>← Stop</button>
+          {devStartTime && <span style={{ fontSize: 10, color: "#5a7a5a", marginTop: 2 }}>Started: {devStartTime}</span>}
+        </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}
-          onClick={() => { unlockAudio(); if(!voiceOn) { speak("音声オン"); } setVoiceOn(v => !v); if(voiceOn) try{window.speechSynthesis?.cancel();}catch(e){} }}
+          onClick={() => { unlockAudio(); const next = !voiceOn; if(next) { speak("Voice on."); } else { sharedAudio.pause(); sharedAudio.currentTime = 0; } setVoiceOn(next); localStorage.setItem("voiceOn", next); }}
         >
-          <span style={{ fontSize: 13, color: "#8a7a66" }}>{voiceOn ? "🔊" : "🔇"} 音声</span>
+          <span style={{ fontSize: 13, color: voiceOn ? "#c8a87c" : "#8a7a66" }}>{voiceOn ? "🔊" : "🔇"} Voice <span style={{ fontWeight: 700 }}>{voiceOn ? "ON" : "OFF"}</span></span>
           <div style={{
             width: 48, height: 28, borderRadius: 14, cursor: "pointer",
             background: voiceOn ? "#c8a87c" : "rgba(255,255,255,0.1)",
@@ -1166,15 +1189,15 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
       <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: 12, padding: "12px 14px", border: "1px solid rgba(200,168,124,0.1)", marginBottom: 12 }}>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
           <div style={{ textAlign: "center", flex: 1 }}>
-            <div style={{ fontSize: 10, color: "#6a5a46", letterSpacing: 1 }}>経過</div>
+            <div style={{ fontSize: 10, color: "#6a5a46", letterSpacing: 1 }}>Elapsed</div>
             <div style={{ fontSize: 16, fontWeight: 700, color: "#c8a87c", fontVariantNumeric: "tabular-nums" }}>{formatTime(globalElapsed)}</div>
           </div>
           <div style={{ textAlign: "center", flex: 1 }}>
-            <div style={{ fontSize: 10, color: "#6a5a46", letterSpacing: 1 }}>合計</div>
+            <div style={{ fontSize: 10, color: "#6a5a46", letterSpacing: 1 }}>Total</div>
             <div style={{ fontSize: 16, fontWeight: 600, color: "#8a7a66", fontVariantNumeric: "tabular-nums" }}>{formatTime(totalTime)}</div>
           </div>
           <div style={{ textAlign: "center", flex: 1 }}>
-            <div style={{ fontSize: 10, color: "#6a5a46", letterSpacing: 1 }}>残り</div>
+            <div style={{ fontSize: 10, color: "#6a5a46", letterSpacing: 1 }}>Remaining</div>
             <div style={{ fontSize: 16, fontWeight: 700, color: "#e0d4c2", fontVariantNumeric: "tabular-nums" }}>{formatTime(globalRemaining)}</div>
           </div>
         </div>
@@ -1237,7 +1260,7 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
             </>}
           </svg>
           <div style={{ textAlign: "center", fontSize: 10, fontWeight: 600, color: agitating && running ? "#ff6b35" : "#5a4a36" }}>
-            {agitating && running ? "攪拌中" : running ? "静置中" : "待機"}
+            {agitating && running ? "Agitating" : running ? "Resting" : "Standby"}
           </div>
         </div>
 
@@ -1259,7 +1282,7 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
         <div style={{ flex: 1, minWidth: 0 }}>
           {countdown !== null && running && !agitating && (
             <div style={{ fontSize: 13, color: "#d4a055", fontWeight: 600, marginBottom: 4 }}>
-              ⏱ {countdown}秒後
+              ⏱ {countdown}s
             </div>
           )}
           <div style={{
@@ -1268,19 +1291,23 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
             color: agitating && running ? "#ff6b35" : "#8a7a66",
             border: `1px solid ${agitating && running ? "rgba(255,107,53,0.3)" : "rgba(200,168,124,0.08)"}`,
             animation: agitating && running ? "pulseGlow 1.5s infinite" : "none",
-          }}>{alert || "▶ で開始"}</div>
+          }}>{alert || "Press ▶ to start"}</div>
+          {pat && pat.desc && cur?.id === "developer" && (
+            <div style={{ fontSize: 11, color: "#6a5a46", marginTop: 6, lineHeight: 1.5 }}>{pat.desc}</div>
+          )}
         </div>
       </div>
 
+
       {/* Controls */}
       <div style={{ display: "flex", justifyContent: "center", gap: 12, marginBottom: 12 }}>
-        {!running && timeLeft > 0 && <button style={{ ...S.timerPlayBtn, padding: "12px 40px", fontSize: 16 }} onClick={() => { unlockAudio(); beep(880, 200, 0.3); if(voiceOn) speak("開始します"); setRunning(true); }}>▶ 開始</button>}
-        {running && <button style={{ ...S.timerPauseBtn, padding: "12px 40px", fontSize: 16 }} onClick={() => setRunning(false)}>⏸ 一時停止</button>}
+        {!running && timeLeft > 0 && <button style={{ ...S.timerPlayBtn, padding: "12px 40px", fontSize: 16 }} onClick={() => { unlockAudio(); beep(880, 200, 0.3); if (cur?.id === "developer" && !devStartTime) { const now = new Date(); const t = `${now.getHours().toString().padStart(2,"0")}:${now.getMinutes().toString().padStart(2,"0")}`; setDevStartTime(t); localStorage.setItem("devStartTime", t); } setRunning(true); }}>▶ Start</button>}
+        {running && <button style={{ ...S.timerPauseBtn, padding: "12px 40px", fontSize: 16 }} onClick={() => { sharedAudio.onended = null; sharedAudio.pause(); sharedAudio.currentTime = 0; setRunning(false); }}>⏸ Pause</button>}
         {timeLeft === 0 && stepIdx < steps.length - 1 && (
-          <button style={{ ...S.timerNextBtn, padding: "12px 24px", fontSize: 14 }} onClick={() => goStep(stepIdx + 1)}>次へ: {steps[stepIdx + 1]?.name} →</button>
+          <button style={{ ...S.timerNextBtn, padding: "12px 24px", fontSize: 14 }} onClick={() => goStep(stepIdx + 1)}>Next: {steps[stepIdx + 1]?.name} →</button>
         )}
         {timeLeft === 0 && stepIdx === steps.length - 1 && (
-          <button style={{ ...S.timerNextBtn, padding: "12px 24px", fontSize: 14 }} onClick={() => setDone(true)}>完了 ✓</button>
+          <button style={{ ...S.timerNextBtn, padding: "12px 24px", fontSize: 14 }} onClick={() => setDone(true)}>Complete ✓</button>
         )}
       </div>
 
@@ -1290,7 +1317,7 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
       )}
 
       {/* ── LIVE SCHEDULE LIST ── */}
-      <div style={{ ...S.sectionLabel, marginTop: 12, marginBottom: 8 }}>攪拌スケジュール</div>
+      <div style={{ ...S.sectionLabel, marginTop: 12, marginBottom: 8 }}>Agitation Schedule</div>
       <div style={{
         background: "rgba(255,255,255,0.02)", borderRadius: 10, overflow: "hidden",
         border: "1px solid rgba(200,168,124,0.08)", maxHeight: 240, overflowY: "auto",
@@ -1330,12 +1357,12 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
                   color: isCurrent ? (isAg ? "#ff6b35" : "#c8a87c") : (isAg ? "#9a6a40" : "#5a4a36"),
                   fontWeight: isCurrent ? 700 : 400,
                 }}>
-                  {isAg ? "攪拌" : "静置"}
+                  {isAg ? "Agitate" : "Rest"}
                   {isCurrent && " ◀"}
                 </div>
                 {/* Duration */}
                 <div style={{ fontSize: 11, color: "#6a5a46", fontVariantNumeric: "tabular-nums" }}>
-                  {dur >= 60 ? formatTimeJa(dur) : `${dur}秒`}
+                  {dur >= 60 ? formatTimeEn(dur) : `${dur}s`}
                 </div>
               </div>
             );
@@ -1353,7 +1380,7 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
       {/* ── REMAINING PROCESS STEPS ── */}
       {stepIdx < steps.length - 1 && (
         <>
-          <div style={{ ...S.sectionLabel, marginTop: 12, marginBottom: 6 }}>この後の工程</div>
+          <div style={{ ...S.sectionLabel, marginTop: 12, marginBottom: 6 }}>Upcoming Steps</div>
           {steps.slice(stepIdx + 1).map((s, i) => (
             <div key={i} style={{
               display: "flex", justifyContent: "space-between", alignItems: "center",
@@ -1361,7 +1388,7 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
               borderBottom: "1px solid rgba(200,168,124,0.04)",
             }}>
               <span style={{ color: "#7a6a56" }}>{s.name}</span>
-              <span style={{ color: "#5a4a36", fontVariantNumeric: "tabular-nums" }}>{formatTimeJa(s.duration)}</span>
+              <span style={{ color: "#5a4a36", fontVariantNumeric: "tabular-nums" }}>{formatTimeEn(s.duration)}</span>
             </div>
           ))}
         </>
@@ -1372,7 +1399,7 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
 
 // ─── STYLES ────────────────────────────────────────────────────────
 const S = {
-  app: { minHeight:"100vh", background:"linear-gradient(180deg,#0a0a0a 0%,#1a1209 50%,#0d0906 100%)", color:"#e8dcc8", fontFamily:"'Hiragino Kaku Gothic ProN','Noto Sans JP',-apple-system,sans-serif", WebkitFontSmoothing:"antialiased", maxWidth:480, margin:"0 auto" },
+  app: { minHeight:"100vh", background:"linear-gradient(180deg,#0a0a0a 0%,#1a1209 50%,#0d0906 100%)", color:"#e8dcc8", fontFamily:"-apple-system,'Helvetica Neue',Arial,sans-serif", WebkitFontSmoothing:"antialiased", maxWidth:480, margin:"0 auto" },
   safeArea: { paddingTop:12, paddingBottom:40 },
   screen: { padding:"0 20px 40px", minHeight:"100vh", transition:"background 0.3s" },
   screenAgitate: { background:"radial-gradient(ellipse at center,rgba(255,107,53,0.08) 0%,transparent 70%)" },
