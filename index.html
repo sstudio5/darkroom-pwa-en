@@ -1198,8 +1198,7 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
     if (inFinalCountdown) {
       if (isDeveloper) {
         if (timeLeft === 10) { soundType = "tick"; speechText = "Ten seconds. Prepare stop bath."; }
-        else if (timeLeft === 5) { soundType = "tick"; speechText = "Drain now."; }
-        else if (timeLeft < 5) { soundType = "tick"; speechText = `${timeLeft}`; }
+        else if (timeLeft <= 5 && timeLeft > 0) { soundType = "tick"; speechText = `${timeLeft}`; }
       } else {
         if (timeLeft <= 5 && timeLeft > 0) { soundType = "tick"; speechText = `${timeLeft}`; }
       }
@@ -1249,18 +1248,11 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
           presoak: "Pre-soak starting. Agitate now.",
           developer: "Development starting. Agitate now.",
           // stop: handled by auto-advance timeout (would double if included here)
-          fix: "Fixer.",
+          fix: "Fixer. Agitate now.",
           wash: "Wash starting.",
         };
-        const agitateAfter = ["fix"];
         if (msgMap[cur.id]) {
           speak(msgMap[cur.id]);
-          if (agitateAfter.includes(cur.id)) {
-            sharedAudio.onended = () => {
-              sharedAudio.onended = null;
-              if (voiceOnRef.current) speak("Agitate now.");
-            };
-          }
         }
       }
     }
