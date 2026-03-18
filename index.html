@@ -1194,15 +1194,14 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
 
     // T-60 announcement removed: T-15 "Finishing soon." is sufficient. Also avoids conflict with agitation voice.
 
-    // Final 15-second countdown: T-10 announce → numbers from T-5
+    // Final 15-second countdown: beep+announce only at key moments
     if (inFinalCountdown) {
-      soundType = "tick";
       if (isDeveloper) {
-        if (timeLeft === 10) speechText = "Ten seconds. Prepare stop bath.";
-        else if (timeLeft === 5) speechText = "Drain now.";
-        else if (timeLeft < 5) speechText = `${timeLeft}`;
+        if (timeLeft === 10) { soundType = "tick"; speechText = "Ten seconds. Prepare stop bath."; }
+        else if (timeLeft === 5) { soundType = "tick"; speechText = "Drain now."; }
+        else if (timeLeft < 5) { soundType = "tick"; speechText = `${timeLeft}`; }
       } else {
-        if (timeLeft <= 5) speechText = `${timeLeft}`;
+        if (timeLeft <= 5 && timeLeft > 0) { soundType = "tick"; speechText = `${timeLeft}`; }
       }
     }
 
@@ -1249,15 +1248,14 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
         const msgMap = {
           presoak: "Pre-soak starting. Agitate now.",
           developer: "Development starting. Agitate now.",
-          stop: "Pour in stop bath.",
-          fix: "Fixer. Agitate now.",
+          // stop: handled by auto-advance timeout (would double if included here)
+          fix: "Fixer.",
           wash: "Wash starting.",
         };
-        const agitateAfter = ["stop", "fix"];
+        const agitateAfter = ["fix"];
         if (msgMap[cur.id]) {
           speak(msgMap[cur.id]);
           if (agitateAfter.includes(cur.id)) {
-            // Play agitate voice once after main message ends (onended cleared immediately to prevent loop)
             sharedAudio.onended = () => {
               sharedAudio.onended = null;
               if (voiceOnRef.current) speak("Agitate now.");
