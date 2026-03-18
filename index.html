@@ -1223,7 +1223,7 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
       else if (soundType === "tick") beepTick();
       if (voiceOn && speechText) {
         // Agitate/rest play every cycle; others deduplicated
-        const isRepeatable = speechText === "Please agitate." || speechText === "Please rest.";
+        const isRepeatable = speechText === "Agitate now." || speechText === "Rest.";
         if (isRepeatable || speechText !== lastSpokenRef.current) {
           speak(speechText);
           if (!speechText.match(/^[0-9]$/)) lastSpokenRef.current = speechText;
