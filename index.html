@@ -922,17 +922,20 @@ const beepTick = () => beep(660, 80, 0.15);
 
 // Pre-recorded audio map
 const AUDIO_MAP = {
-  "Please agitate.": "agitate",
-  "Please rest.": "rest",
-  "Finishing soon.": "soon_finish",
+  "Agitate now.": "agitate",
+  "Rest.": "rest",
   "Pour in stop bath.": "stop_bath",
   "Pour in stop bath. Agitate for one minute.": "stop_bath",
   "Discard and prepare fixer.": "discard_fix",
   "Process complete.": "complete",
-  "Agitate in 5 seconds.": "pre_agitate",
-  "Starting pre-soak. Please agitate.": "presoak_start",
-  "Starting fixer.": "fix_start",
-  "Starting wash and wetting agent.": "wash_start",
+  "Agitate in five.": "pre_agitate",
+  "Pre-soak starting. Agitate now.": "presoak_start",
+  "Development starting. Agitate now.": "start_develop",
+  "Fixer. Agitate now.": "fix_start",
+  "Wash starting.": "wash_start",
+  "Add wetting agent.": "wetting_start",
+  "Ten seconds. Prepare stop bath.": "final_ten",
+  "Drain now.": "drain",
   "Voice on.": "voice_on",
   "1":"n1","2":"n2","3":"n3","4":"n4","5":"n5",
   "6":"n6","7":"n7","8":"n8","9":"n9","10":"n10",
@@ -1174,29 +1177,33 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
         soundType = "agitate";
         // timeLeft === cur.duration means step just started → skip (step-transition useEffect handles it)
         if (timeLeft < cur.duration) {
-          speechText = "Please agitate.";
+          speechText = "Agitate now.";
         }
         try { navigator.vibrate?.(100); } catch(e){}
       } else if (!isNowAgitating && wasAgitating && !newAlert.includes("complete")) {
         soundType = "rest";
-        speechText = "Please rest.";
+        speechText = "Rest.";
       }
     }
 
     // Agitation pre-countdown (except last 65 sec)
     if (newCountdown !== null && newCountdown !== countdown) {
-      if (newCountdown === 5) { soundType = "tick"; speechText = "Agitate in 5 seconds."; }
+      if (newCountdown === 5) { soundType = "tick"; speechText = "Agitate in five."; }
       else if (newCountdown <= 3) { soundType = "tick"; speechText = `${newCountdown}`; }
     }
 
     // T-60 announcement removed: T-15 "Finishing soon." is sufficient. Also avoids conflict with agitation voice.
 
-    // Final 10-second countdown: announce at T-15, then numbers from T-5
+    // Final 15-second countdown: T-10 announce → numbers from T-5
     if (inFinalCountdown) {
       soundType = "tick";
-      if (timeLeft === 15) speechText = "Finishing soon.";
-      else if (timeLeft <= 5 && timeLeft > 0) speechText = `${timeLeft}`;
-      // T-9,8,7,6: silent (waiting for T-15 announcement to finish)
+      if (isDeveloper) {
+        if (timeLeft === 10) speechText = "Ten seconds. Prepare stop bath.";
+        else if (timeLeft === 5) speechText = "Drain now.";
+        else if (timeLeft < 5) speechText = `${timeLeft}`;
+      } else {
+        if (timeLeft <= 5) speechText = `${timeLeft}`;
+      }
     }
 
     // Step completion
@@ -1230,7 +1237,7 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
   useEffect(() => {
     if (cur?.manual) {
       beep(660, 200, 0.3);
-      if (voiceOnRef.current) speak("Starting wash and wetting agent.");
+      if (voiceOnRef.current) speak("Add wetting agent.");
     }
   }, [stepIdx]);
 
@@ -1240,11 +1247,11 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
       beep(660, 200, 0.3);
       if (voiceOn) {
         const msgMap = {
-          presoak: "Starting pre-soak. Please agitate.",
-          developer: "Starting development. Please agitate.",
+          presoak: "Pre-soak starting. Agitate now.",
+          developer: "Development starting. Agitate now.",
           stop: "Pour in stop bath.",
-          fix: "Starting fixer.",
-          wash: "Starting wash and wetting agent.",
+          fix: "Fixer. Agitate now.",
+          wash: "Wash starting.",
         };
         const agitateAfter = ["stop", "fix"];
         if (msgMap[cur.id]) {
@@ -1253,7 +1260,7 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
             // Play agitate voice once after main message ends (onended cleared immediately to prevent loop)
             sharedAudio.onended = () => {
               sharedAudio.onended = null;
-              if (voiceOnRef.current) speak("Please agitate.");
+              if (voiceOnRef.current) speak("Agitate now.");
             };
           }
         }
