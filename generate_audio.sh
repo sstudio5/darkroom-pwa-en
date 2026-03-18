@@ -2,11 +2,18 @@
 OUT="/Users/shin01/Dropbox/claude-code/Development_app/darkroom-pwa-en/audio"
 mkdir -p "$OUT"
 
+# OpenAI TTS: nova voice (clear female)
 say_en() {
-  say -v Samantha "$1" -o "${OUT}/${2}.aiff"
-  ffmpeg -y -i "${OUT}/${2}.aiff" "${OUT}/${2}.wav" 2>/dev/null
-  rm -f "${OUT}/${2}.aiff"
-  echo "✓ $2"
+  local text="$1"
+  local name="$2"
+  curl -s https://api.openai.com/v1/audio/speech \
+    -H "Authorization: Bearer ${OPENAI_API_KEY}" \
+    -H "Content-Type: application/json" \
+    -d "{\"model\":\"tts-1-hd\",\"voice\":\"nova\",\"input\":\"${text}\"}" \
+    --output "${OUT}/${name}.mp3"
+  ffmpeg -y -i "${OUT}/${name}.mp3" "${OUT}/${name}.wav" 2>/dev/null
+  rm -f "${OUT}/${name}.mp3"
+  echo "✓ $name"
 }
 
 echo "Generating English audio files..."
