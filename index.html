@@ -1072,16 +1072,19 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
     if (!running && timeLeft === 0 && cur?.id === "developer") {
       const nextIdx = stepIdx + 1;
       if (nextIdx < steps.length && steps[nextIdx]?.id === "stop") {
-        // 5 sec warning voice
+        // 5 sec warning voice + agitate instruction 2s later
         const t1 = setTimeout(() => {
           if (voiceOnRef.current) speak("Pour in stop bath. Agitate for one minute.");
         }, 5000);
+        const t1b = setTimeout(() => {
+          if (voiceOnRef.current) speak("Agitate now.");
+        }, 7500);
         // Start timer after 10 sec
         const t2 = setTimeout(() => {
           goStep(nextIdx);
           setRunning(true);
         }, 10000);
-        return () => { clearTimeout(t1); clearTimeout(t2); };
+        return () => { clearTimeout(t1); clearTimeout(t1b); clearTimeout(t2); };
       }
     }
   }, [running, timeLeft, stepIdx]);
@@ -1111,11 +1114,13 @@ function ProcessScreen({ combo, film, dev, presoak, navigate }) {
             setCountdown(null);
             beepComplete();
             try { navigator.vibrate?.([200,100,200,100,200]); } catch(e){}
-            if (voiceOnRef.current) {
-              if (cur?.id === "developer") speak("Pour in stop bath.");
-              else if (cur?.id === "stop") speak("Discard and prepare fixer.");
-              else speak("Process complete.");
-            }
+            setTimeout(() => {
+              if (voiceOnRef.current) {
+                if (cur?.id === "developer") speak("Pour in stop bath.");
+                else if (cur?.id === "stop") speak("Discard and prepare fixer.");
+                else speak("Process complete.");
+              }
+            }, 600);
             return 0;
           }
           return p - 1;
