@@ -96,6 +96,17 @@ const FILMS = {
     { ei: 125, dilution: "Stock", time: 510, temp: 20, agitation: "ilford", source: "Ilford Official", confidence: 4 },
     { ei: 125, dilution: "1:1", time: 690, temp: 20, agitation: "ilford", source: "Ilford/MDC", confidence: 4 },
   ]}},
+  "sfx200": { name: "Ilford SFX 200", developers: { "d76": [
+    { ei: 200, dilution: "Stock", time: 660, temp: 20, agitation: "ilford", source: "Ilford Official", confidence: 5 },
+    { ei: 200, dilution: "1:1", time: 840, temp: 20, agitation: "ilford", source: "Ilford Official", confidence: 5 },
+    { ei: 400, dilution: "Stock", time: 840, temp: 20, agitation: "ilford", source: "MDC", confidence: 4 },
+  ]}},
+  "neopan400": { name: "Fuji Neopan 400 Presto", developers: { "d76": [
+    { ei: 400, dilution: "Stock", time: 420, temp: 20, agitation: "kodak", source: "Massive Dev Chart", confidence: 4 },
+    { ei: 400, dilution: "1:1", time: 630, temp: 20, agitation: "kodak", source: "Massive Dev Chart", confidence: 4 },
+    { ei: 800, dilution: "Stock", time: 540, temp: 20, agitation: "kodak", source: "Massive Dev Chart", confidence: 3 },
+    { ei: 1600, dilution: "Stock", time: 720, temp: 20, agitation: "kodak", source: "Massive Dev Chart", confidence: 3 },
+  ]}},
   "techpan": { name: "Kodak Technical Pan", developers: {
     "pota": [
       { ei: 25, dilution: "Stock", time: 900, temp: 20, agitation: "pota", source: "Kodak 1980 Technical Document", confidence: 5 },
@@ -574,7 +585,7 @@ function TimerScreen({ combo, film, dev, presoak, setPresoak, navigate }) {
   const f = FILMS[film] || { name: combo._filmName || "Custom Film" };
   const pat = AGITATION_PATTERNS[combo.agitation] || AGITATION_PATTERNS.kodak;
   const isTechPan = film === "techpan";
-  const isIlford = film === "hp5" || film === "fp4";
+  const isIlford = film === "hp5" || film === "fp4" || film === "sfx200";
 
   // Auto-enable presoak for Tech Pan on first render
   useEffect(() => { if (isTechPan && !presoak) setPresoak(true); }, []);
